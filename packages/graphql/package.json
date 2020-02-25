@@ -1,0 +1,39 @@
+{
+  "name": "@phony/graphql",
+  "version": "0.1.0",
+  "description": "A graphql mock with graphiql",
+  "repository": "git@github.com:pixelass/phony.git",
+  "license": "MIT",
+  "author": {
+    "name": "Gregor Adams",
+    "email": "greg@pixelass.com",
+    "url": "https://pixelass.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "lib": "dist",
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "prebuild": "rimraf dist",
+    "watch": "rollup -c"
+  },
+  "dependencies": {
+    "@phony/server": "^0.1.0",
+    "@types/express-graphql": "^0.9.0",
+    "graphql": "^15.0.0-rc.2",
+    "express-graphql": "^0.9.0",
+    "pify": "^5.0.0",
+    "pluralize": "^8.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@examples/graphql",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Example for a phony graphql",
+  "repository": "git@github.com:pixelass/phony.git",
+  "license": "MIT",
+  "author": {
+    "name": "Gregor Adams",
+    "email": "greg@pixelass.com",
+    "url": "https://pixelass.com"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@phony/graphql": "0.1.0"
+  }
+}
