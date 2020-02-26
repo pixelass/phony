@@ -18,7 +18,8 @@
     "examples:graphql": "lerna run start --scope @examples/graphql --stream",
     "examples:cli": "lerna run start --scope @examples/cli --stream",
     "watch": "lerna run watch --parallel",
-    "clean:package-json": "npx sort-package-json package.json 'packages/*/package.json'"
+    "clean:package-json": "npx sort-package-json package.json 'packages/*/package.json'",
+    "toc": "npx markdown-toc -i README.md"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
