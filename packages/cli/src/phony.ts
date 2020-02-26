@@ -3,14 +3,15 @@ import flush from "@phony/graphql/flush";
 import exportSchema from "@phony/graphql/export";
 import * as path from "path";
 import { existsSync } from "fs";
+import {AnyFlags} from "meow";
 
-async function phony(cmd, filePath, flags) {
+async function phony(cmd: string, filePath: string, flags: AnyFlags): Promise<boolean | void> {
 	const cwd = process.cwd();
 	const resolvedPath = path.resolve(cwd, filePath);
 	const port = flags.port;
 	const database = flags.database;
 	if (cmd === "graphql") {
-		const databasePath = path.resolve(cwd, database);
+		const databasePath = path.resolve(cwd, database as string);
 		const shouldServe = !flags["no-serve"];
 		const shouldFlush = !!flags.flush;
 		const shouldInit = !!flags.init;
@@ -22,7 +23,8 @@ async function phony(cmd, filePath, flags) {
 			}
 		}
 		if (shouldExport) {
-			await exportSchema(require(resolvedPath), schemaPath);
+			return await exportSchema(require(resolvedPath), schemaPath);
+
 		}
 		if (shouldServe) {
 			if (!existsSync(databasePath)) {
@@ -33,7 +35,7 @@ async function phony(cmd, filePath, flags) {
 				);
 				return;
 			}
-			await phonyGraphql(require(databasePath), databasePath, port);
+			return await phonyGraphql(require(databasePath), databasePath, port as string);
 		}
 	}
 }
