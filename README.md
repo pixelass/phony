@@ -1,5 +1,7 @@
-# phony
-a collection of phony (mock) services
+# 👺 phony
+
+Phony is a collection of phony (mock) services.  
+Its main purpose is to provide a mocked graphql service
 
 <!-- toc -->
 
