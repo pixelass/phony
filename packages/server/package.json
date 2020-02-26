@@ -9,10 +9,7 @@
     "email": "greg@pixelass.com",
     "url": "https://pixelass.com"
   },
-  "files": [
-    "dist"
-  ],
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/index.d.ts",
   "directories": {
@@ -20,9 +17,12 @@
     "doc": "doc",
     "test": "test"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "rollup -c",
     "prebuild": "rimraf dist",
+    "build": "rollup -c",
     "watch": "rollup -cw"
   },
   "dependencies": {

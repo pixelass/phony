@@ -15,11 +15,12 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build --stream",
-    "examples:graphql": "lerna run start --scope @examples/graphql --stream",
-    "examples:cli": "lerna run start --scope @examples/cli --stream",
-    "watch": "lerna run watch --parallel",
     "clean:package-json": "npx sort-package-json package.json 'packages/*/package.json'",
-    "toc": "npx markdown-toc -i README.md"
+    "examples:cli": "lerna run start --scope @examples/cli --stream",
+    "cli:help": "lerna run show-help --scope @examples/cli --stream",
+    "examples:graphql": "lerna run start --scope @examples/graphql --stream",
+    "toc": "npx markdown-toc -i README.md",
+    "watch": "lerna run watch --parallel"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

@@ -12,13 +12,11 @@ module.exports = function() {
 	return [
 		{
 			input: "src/index.ts",
-			external: [
-				...Object.keys(pkg.dependencies || {})
-			],
+			external: [...Object.keys(pkg.dependencies || {})],
 			output: [
 				{
 					banner: createBanner(pkg),
-					file: pkg.main,
+					file: `dist/${pkg.main}`,
 					format: "cjs"
 				},
 				{

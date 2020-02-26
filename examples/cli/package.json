@@ -11,7 +11,8 @@
     "url": "https://pixelass.com"
   },
   "scripts": {
-    "start": "phony graphql db.js -i"
+    "start": "phony graphql -i",
+    "show-help": "phony --help"
   },
   "devDependencies": {
     "@phony/cli": "^0.1.0"

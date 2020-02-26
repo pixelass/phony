@@ -9,68 +9,39 @@ module.exports = function() {
 	const cwd = process.cwd();
 	const pkg = require(path.resolve(cwd, "package.json"));
 	const tsconfig = path.resolve(cwd, "tsconfig.json");
-	return [
-		{
-			input: "src/index.ts",
-			external: [
-				...Object.keys(pkg.dependencies || {})
-			],
-			output: [
-				{
-					banner: createBanner(pkg),
-					file: pkg.main,
-					format: "cjs"
-				},
-				{
-					banner: createBanner(pkg),
-					file: pkg.module,
-					format: "esm"
-				}
-			],
-			plugins: [
-				commonjs(),
-				json(),
-				babel(),
-				typescript({
-					tsconfig,
-					tsconfigOverride: {
-						compilerOptions: {
-							module: "es6"
-						}
-					}
-				})
-			]
-		},
-		{
-			input: "src/flush.ts",
-			external: [
-				...Object.keys(pkg.dependencies || {})
-			],
-			output: [
-				{
-					banner: createBanner(pkg),
-					file: "dist/flush.js",
-					format: "cjs"
-				},
-				{
-					banner: createBanner(pkg),
-					file: "dist/esm/flush.js",
-					format: "esm"
-				}
-			],
-			plugins: [
-				commonjs(),
-				json(),
-				babel(),
-				typescript({
-					tsconfig,
-					tsconfigOverride: {
-						compilerOptions: {
-							module: "es6"
-						}
-					}
-				})
-			]
-		}
+	const external = [
+		...Object.keys(pkg.dependencies || {})
 	];
+	const plugins = [
+		commonjs(),
+		json(),
+		babel(),
+		typescript({
+			tsconfig,
+			tsconfigOverride: {
+				compilerOptions: {
+					module: "es6"
+				}
+			}
+		})
+	]
+	const inputs = pkg.files.filter(name => name.endsWith(".js"))
+	const builds = inputs.map(input => ({
+		input: `src/${input}`.replace(".js", ".ts"),
+		external,
+		output: [
+			{
+				banner: createBanner(pkg),
+				file: `dist/${input}`,
+				format: "cjs"
+			},
+			{
+				banner: createBanner(pkg),
+				file: `dist/esm/${input}`,
+				format: "esm"
+			}
+		],
+		plugins
+	}))
+	return builds;
 };
