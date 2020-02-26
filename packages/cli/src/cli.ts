@@ -12,7 +12,7 @@ Options
   --export, -e    schema will be exported when true
   --schema, -s    schema will be exported to this path
   --database, -d  database will be generated or read from to this path
-  --no-serve, -n  don't serve (only exports schema)
+  --no-serve, -n  don't serve
   --flush, -f     resets the local database (removes all additions, updates and deletions)
   --init, -i      initializes the local database (only if it doesn't exist, does not flush)
   --port, -p      port for graphql service
