@@ -47,11 +47,25 @@ Phony can be used via the cli or in node.js
 ### cli
 
 ```bash
-phony graphql db.js --init ## run server with initialized database
-phony graphql db.js --database .tmp/db.json --flush --no-serve ## flush database to custom file only
-phony graphql db.js --export-schema schema.graphql --no-serve ## export schema only
+## run server with initialized database
+phony graphql --init
+## run server with flushed database
+phony graphql --flush
+## flush database only
+phony graphql --flush --no-serve
+## export schema to custom file from custom db
+phony graphql my-database.js --schema my-schema.grahphl --export
 ```
-
+```
+Options
+  --export, -e    schema will be exported when true
+  --schema, -s    schema will be exported to this path
+  --database, -d  database will be generated or read from to this path
+  --no-serve, -n  don't serve (only exports schema)
+  --flush, -f     resets the local database (removes all additions, updates and deletions)
+  --init, -i      initializes the local database (only if it doesn't exist, does not flush)
+  --port, -p      port for graphql service
+```
 ### node.js
 
 ```js
@@ -63,7 +77,7 @@ const db = require("./db");
 async function start() {
 	const filePath = path.resolve(__dirname, "db.json");
 	await flush(db, filePath);
-	createGraphqlServer(db, {serve: true, "export": false, filePath}, port)
+	await createGraphqlServer(db, filePath, port)
 }
 
 start();
