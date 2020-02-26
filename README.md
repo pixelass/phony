@@ -50,7 +50,9 @@ Phony can be used via the cli or in node.js
 ### Use graphlql via cli
 
 ```bash
-phony graphql db.js -i
+phony graphql db.js --init ## run server with initialized database
+phony graphql db.js --database .tmp/db.json --flush --no-serve ## flush database to custom file only
+phony graphql db.js --export-schema schema.graphql --no-serve ## export schema only
 ```
 
 ### Use graphlql via node.js
@@ -72,9 +74,11 @@ start();
 
 
 ## Features
+
 * build a graphql service from JSON
 * build a local database from JSON
 * allow flushing the local database (reset)
+* export the generated typeDefs in a `scheme.graphql` file
 * mutations (will write to local database)
 * automatic queries and mutations (i.e. `[name]` = `User`)
   * `get[name]s`: returns all items
