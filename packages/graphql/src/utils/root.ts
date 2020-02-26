@@ -1,10 +1,15 @@
-import {Database} from "./types";
+import {Database, DatabaseEntry, Root, Pagination} from "./types";
 import {getNames} from "./names";
 import {v4 as uuid} from "uuid";
 import {update as updateDB} from "./database";
-import {isSame} from "@phony/utils";
+import {getPage, isSame, withSorting} from "@phony/utils";
 
-export function buildRoot(data: Database, plainData: Database, filePath) {
+function withPagination(collection: DatabaseEntry[], pagination: Pagination) {
+	const {page, pageSize, sorting} = pagination;
+	return getPage(withSorting(collection, sorting), {page, pageSize});
+}
+
+export function buildRoot(data: Database, plainData: Database, filePath): Root {
 	return Object.entries(data).reduce((current, [key]) => {
 		const names = getNames(key);
 		let collection = data[key];
@@ -12,7 +17,7 @@ export function buildRoot(data: Database, plainData: Database, filePath) {
 
 		return {
 			...current,
-			[names.getAll]: () => collection,
+			[names.getAll]: ({pagination}) => pagination ? withPagination(collection, pagination) : collection,
 			[names.getById]: ({id}) => collection.find(isSame(id)),
 			[names.meta]: () => ({
 				count: collection.length

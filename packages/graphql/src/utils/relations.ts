@@ -3,7 +3,7 @@ import cloneDeep from "lodash.clonedeep";
 import {capitalize, isRelative, pluralize} from "@phony/utils";
 import {ID_SUFFIX_PATTERN} from "../constants";
 
-export function buildRelations(json: Database) {
+export function buildRelations(json: Database): Database {
 	const data: Database = cloneDeep(json);
 	Object.entries(data).forEach(([key, entries]) => {
 		const upperKey = capitalize(key);

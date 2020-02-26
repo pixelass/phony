@@ -8,7 +8,7 @@ import phonyServe from "./utils/serve";
 import { Database } from "./utils/types";
 import { buildTypeDefs } from "./utils/type-builders";
 
-async function serve(json: Database, databasePath: string, port: string | number = 1337) {
+async function serve(json: Database, databasePath: string, port: string | number = 1337): Promise<void> {
 	const rawData = cloneDeep(json);
 	const data = buildRelations(rawData);
 	const typeDefs = buildTypeDefs(data);

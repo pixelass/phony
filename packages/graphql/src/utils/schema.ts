@@ -1,6 +1,11 @@
 import {writeFile} from "@phony/utils";
 
-export async function exportSchema(typeDefs, schemaFile) {
-	await writeFile(schemaFile, typeDefs);
-	console.log(`schema has been exported to ${schemaFile}`);
+export async function exportSchema(typeDefs, schemaFile): Promise<boolean> {
+	return writeFile(schemaFile, typeDefs).then(() => {
+		console.log(`schema has been exported to ${schemaFile}`);
+		return true
+	}).catch(error => {
+		console.error(error);
+		return false
+	});
 }

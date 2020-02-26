@@ -14,7 +14,7 @@ import {
 	isArray,
 	arrToIndentString
 } from "@phony/utils";
-import { META_DATA_TYPE, POTENTIALLY_REQUIRED, TYPES } from "../constants";
+import {META_DATA_TYPE, PAGINATION_TYPE, POTENTIALLY_REQUIRED, TYPES} from "../constants";
 import { Database } from "./types";
 import { getNames } from "./names";
 import omit from "lodash.omit";
@@ -120,7 +120,7 @@ export function buildTypeDefs(json: Database) {
 	const queryDefs = Object.entries(json).reduce((current, [key, value]) => {
 		const type = buildTypes(value, key, phonyTypes);
 		const names = getNames(key);
-		const getAll = `${names.getAll}: [${type}]`;
+		const getAll = `${names.getAll}(pagination: Pagination): [${type}]`;
 		const getById = `${names.getById}(id: ID!): ${type}`;
 		const meta = `${names.meta}: MetaData`;
 		return `${current}\n  ${getAll}\n  ${getById}\n  ${meta}`;
@@ -154,5 +154,5 @@ export function buildTypeDefs(json: Database) {
 	}, "");
 	const query = `type Query {${queryDefs}\n}`;
 	const mut = `type Mutation {${mutDefs}\n}`;
-	return [query, mut, META_DATA_TYPE, ...uniq(phonyTypes), ...uniq(phonyInputs)].join("\n\n");
+	return [query, mut, PAGINATION_TYPE, META_DATA_TYPE, ...uniq(phonyTypes), ...uniq(phonyInputs)].join("\n\n");
 }
