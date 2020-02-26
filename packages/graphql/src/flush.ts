@@ -7,7 +7,7 @@ function prettyJSON(data, space = 4) {
 	return JSON.stringify(data, null, space);
 }
 
-function flushData(data, filePath) {
+async function flushData(data, filePath) {
 	return writeFile(filePath, prettyJSON(data))
 		.then(() => true)
 		.catch(error => {

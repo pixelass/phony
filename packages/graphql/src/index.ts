@@ -8,18 +8,11 @@ import pluralize from "pluralize";
 import cloneDeep from "lodash.clonedeep";
 import uniq from "lodash.uniq";
 import omit from "lodash.omit";
+import moment from "moment";
 import { v4 as uuid } from "uuid";
 
-const { readFile, writeFile } = pify(fs);
+const { writeFile } = pify(fs);
 
-async function readSchema(filePath) {
-	return readFile(filePath, "utf8");
-}
-
-async function getSchema(filePath) {
-	const typeDefs = await readSchema(filePath);
-	return buildSchema(typeDefs);
-}
 
 interface DatabaseEntry {
 	[key: string]: any;
@@ -115,6 +108,10 @@ function isCapitalized(str) {
 	return str[0] === str[0].toUpperCase();
 }
 
+function isDate(str) {
+	return moment(str, moment.ISO_8601, true).isValid();
+}
+
 function buildTypes(
 	value: any,
 	key: string,
@@ -131,7 +128,7 @@ function buildTypes(
 		return key;
 	}
 	const type = typeof value;
-	if (type === "string") {
+	if (type === "string" || isDate(value)) {
 		return typeMap.string;
 	}
 	if (type === "number") {
@@ -214,8 +211,13 @@ function buildTypeDefs(json: Database) {
 				removables.filter(removable => x.endsWith(`_${removable}`)).length ||
 				isCapitalized(x)
 		);
-		const initialProps = omit(first, ["id", ...removals.filter(x =>  !x.endsWith("_id"))]);
-		const initialUpdateProps = omit(first, [...Object.keys(first).map(x => x.endsWith("_id") ? x : null), ...removals].filter(Boolean));
+		const initialProps = omit(first, ["id", ...removals.filter(x => !x.endsWith("_id"))]);
+		const initialUpdateProps = omit(
+			first,
+			[...Object.keys(first).map(x => (x.endsWith("_id") ? x : null)), ...removals].filter(
+				Boolean
+			)
+		);
 		buildTypes(initialProps, key, phonyInputs, buildPhonyInput);
 		buildTypes(initialUpdateProps, key, phonyInputs, buildPhonyUpdateInput);
 		const type = buildTypes(first, key, []);
@@ -230,40 +232,55 @@ function buildTypeDefs(json: Database) {
 	return [query, mut, META_DATA_TYPE, ...uniq(phonyTypes), ...uniq(phonyInputs)].join("\n\n");
 }
 
-function buildRoot(json: Database) {
-	const root = Object.entries(json).reduce((current, [key, value]) => {
+async function updateDB(data, filePath) {
+	console.log("> updating database");
+	await writeFile(filePath, JSON.stringify(data, null, 4));
+	console.log("> database updated");
+}
+
+function buildRoot(data: Database, plainData: Database, filePath) {
+	const root = Object.entries(data).reduce((current, [key, value]) => {
 		const names = getNames(key);
-		let collection = json[key];
+		let collection = data[key];
+		let plainCollection = plainData[key];
 
 		return {
 			...current,
 			[names.getAll]: () => collection,
-			[names.getById]: ({ id }) => collection.find(item => `${item.id}` === id),
+			[names.getById]: ({ id }) => collection.find(item => `${item.id}` === `${id}`),
 			[names.meta]: () => ({
 				count: collection.length
 			}),
-			[names.create]: (...args) => {
+			[names.create]: async ({input}) => {
 				const newObj = {
-					...args,
+					...input,
 					id: uuid(),
 					created: new Date()
 				};
 				collection.push(newObj);
+				plainCollection.push(newObj);
+				await updateDB(plainData, filePath);
 				return newObj;
 			},
-			[names.update]: ({ id, ...args }) => {
-				const item = collection.find(item => item.id === id);
-				const itemIndex = collection.findIndex(item => item.id === id);
+			[names.update]: async ({ input: {id, ...args} }) => {
+				const item = collection.find(item => `${item.id}` === `${id}`);
+				const plainItem = plainCollection.find(item => `${item.id}` === `${id}`);
+				const itemIndex = collection.findIndex(item => `${item.id}` === `${id}`);
 				const newObj = {
-					...item,
 					...args,
 					updated: new Date()
 				};
-				collection[itemIndex] = newObj;
-				return newObj;
+				const newItem = {...item, ...newObj};
+				const newEntry = {...plainItem, ...newObj};
+				collection[itemIndex] = newItem;
+				plainCollection[itemIndex] = newEntry;
+				await updateDB(plainData, filePath);
+				return newItem;
 			},
-			[names.del]: (id) => {
+			[names.del]: async id => {
 				collection = collection.filter(item => item.id === id);
+				plainCollection = plainCollection.filter(item => item.id === id);
+				await updateDB(plainData, filePath);
 				return true;
 			}
 		};
@@ -271,31 +288,37 @@ function buildRoot(json: Database) {
 	return root;
 }
 
-async function createGraphqlServer(json, port = 1337) {
-	const data = buildRelations(json);
+async function createGraphqlServer(json, options, port = 1337) {
+	const copy1 = cloneDeep(json);
+	const copy2 = cloneDeep(json);
+	const data = buildRelations(copy1);
 	const typeDefs = buildTypeDefs(data);
-	await writeFile(path.resolve(process.cwd(), "schema.graphql"), typeDefs);
-	const schema = buildSchema(typeDefs);
-	const rootValue = buildRoot(data);
-	const app = createServer();
-	app.get(
-		"*",
-		graphqlHTTP({
-			schema,
-			rootValue,
-			graphiql: true
-		})
-	);
-	app.post(
-		"*",
-		graphqlHTTP({
-			schema,
-			rootValue,
-			graphiql: false
-		})
-	);
-	await app.listen(port);
-	console.log(`> Client ready on http://localhost:${port}`); // eslint-disable-line no-console
+	if (options.export) {
+		await writeFile(path.resolve(process.cwd(), "schema.graphql"), typeDefs);
+	}
+	if (options.serve) {
+		const schema = buildSchema(typeDefs);
+		const rootValue = buildRoot(data, copy2, options.filePath);
+		const app = createServer();
+		app.get(
+			"*",
+			graphqlHTTP({
+				schema,
+				rootValue,
+				graphiql: true
+			})
+		);
+		app.post(
+			"*",
+			graphqlHTTP({
+				schema,
+				rootValue,
+				graphiql: false
+			})
+		);
+		await app.listen(port);
+		console.log(`> Client ready on http://localhost:${port}`); // eslint-disable-line no-console
+	}
 }
 
 export default createGraphqlServer;

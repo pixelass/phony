@@ -1,0 +1,35 @@
+{
+  "name": "@phony/cli",
+  "version": "0.1.0",
+  "description": "A simple mock-server with cors enabled",
+  "repository": "git@github.com:pixelass/phony.git",
+  "license": "MIT",
+  "author": {
+    "name": "Gregor Adams",
+    "email": "greg@pixelass.com",
+    "url": "https://pixelass.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "phony": "bin.js"
+  },
+  "directories": {
+    "lib": "dist",
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "prebuild": "rimraf dist",
+    "watch": "rollup -cw"
+  },
+  "dependencies": {
+    "@phony/graphql": "^0.1.0",
+    "meow": "^6.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
