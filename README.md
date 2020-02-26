@@ -69,18 +69,16 @@ Options
 ### node.js
 
 ```js
-const createGraphqlServer = require("@phony/graphql");
-const flush = require("@phony/graphql/dist/flush");
+const serve = require("@phony/graphql");
+const flush = require("@phony/graphql/flush");
 const path = require("path");
 const db = require("./db");
 
-async function start() {
+(async function() {
 	const filePath = path.resolve(__dirname, "db.json");
 	await flush(db, filePath);
-	await createGraphqlServer(db, filePath, port)
-}
-
-start();
+	await serve(db, filePath);
+})();
 ```
 
 
@@ -90,9 +88,9 @@ start();
 * build a local database from JSON
 * allow flushing the local database (reset)
 * export the generated typeDefs in a `scheme.graphql` file
-* mutations (will write to local database)
+* persistent local database (persists until flushed)
 * automatic queries and mutations (i.e. `[name]` = `User`)
-  * `get[name]s`: returns all items
+  * `get[name]s(pagination: Pagination)`: returns all items with optional pagination and sorting
   * `get[name](id: ID!)`: returns item with matching id
   * `_get[name]Meta`: get meta info (`{count: Int!}`)
   * `create[name](input: [name]Input)`: add new item from given input
