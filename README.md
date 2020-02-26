@@ -4,19 +4,18 @@ a collection of phony (mock) services
 <!-- toc -->
 
 - [Install](#install)
-  * [Install graphlql with cli](#install-graphlql-with-cli)
-    + [yarn](#yarn)
+  * [yarn](#yarn)
   * [npm](#npm)
 - [Usage](#usage)
-  * [Use graphlql via cli](#use-graphlql-via-cli)
-  * [Use graphlql via node.js](#use-graphlql-via-nodejs)
+  * [cli](#cli)
+  * [node.js](#nodejs)
 - [Features](#features)
 - [example scheme](#example-scheme)
 - [Graphiql](#graphiql)
 - [Example Mutation](#example-mutation)
   * [Mutation](#mutation)
   * [Mutation variables](#mutation-variables)
-- [Mutation data](#mutation-data)
+  * [Mutation data](#mutation-data)
 - [Example Query](#example-query)
   * [Query](#query)
   * [Query data](#query-data)
@@ -28,12 +27,10 @@ a collection of phony (mock) services
 
 Phony is a mono-repository and is available on npm under the `@phony` namespace
 
-### Install graphlql with cli
-
 > Warning. This project has not been published yet so an install will not work  
 > This is still a prototype. You can clone/fork this repository to test it locally
 
-#### yarn
+### yarn
 ```bash
 yarn add @phony/cli @phony/graphlql
 ```
@@ -47,7 +44,7 @@ npm install  @phony/cli @phony/graphlql
 
 Phony can be used via the cli or in node.js
 
-### Use graphlql via cli
+### cli
 
 ```bash
 phony graphql db.js --init ## run server with initialized database
@@ -55,7 +52,7 @@ phony graphql db.js --database .tmp/db.json --flush --no-serve ## flush database
 phony graphql db.js --export-schema schema.graphql --no-serve ## export schema only
 ```
 
-### Use graphlql via node.js
+### node.js
 
 ```js
 const createGraphqlServer = require("@phony/graphql");
@@ -164,7 +161,7 @@ mutation example($input: UserUpdateInput!){
 }
 ```
 
-## Mutation data
+### Mutation data
 
 ```json
 {
