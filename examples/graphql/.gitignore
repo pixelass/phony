@@ -106,3 +106,7 @@ dist
 ## build folders
 dist
 public
+
+## build files
+schema.graphql
+db.json

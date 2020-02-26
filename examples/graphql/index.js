@@ -1,35 +1,15 @@
 const createGraphqlServer = require("@phony/graphql");
+const flush = require("@phony/graphql/dist/flush");
+const path = require("path");
+const fs = require("fs");
+const db = require("./db");
 
-const db = {
-	users: [
-		{
-			email: "bart@simpson.com",
-			id: "bart_simpson",
-			name: "Bart Simpson"
-		},
-		{
-			email: "lisa@simpson.com",
-			id: "lisa_simpson",
-			name: "Lisa Simpson",
-		}
-	],
-	jobs: [
-		{
-			name: "Doctor",
-			id: "doctor"
-		},
-		{
-			name: "Teacher",
-			id: "teacher"
-		},
-		{
-			name: "Plumber",
-			id: "plumber"
-		},
-		{
-			name: "Developer",
-			id: "developer"
-		}
-	]
+async function start() {
+	const filePath = path.resolve(__dirname, "db.json");
+	await flush(db, filePath);
+	fs.readFile(filePath, "utf-8", (err, content) => {
+		createGraphqlServer(JSON.parse(content), 3001);
+	} );
 }
-createGraphqlServer(db, 3001);
+
+start();
