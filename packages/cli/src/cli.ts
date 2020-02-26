@@ -6,6 +6,7 @@ export const {input: [cmd, filePath], flags} = meow(`
 
 	Options
 	  --export-schema, -e schema will be exported to this path
+	  --database, -d database will be generates or read from to this path
 	  --no-serve, -n don't serve (only exports schema)
 	  --flush, -f resets the local database (removes all additions, updates and deletions)
 	  --init, -i initializes the local database (only if it doesn't exist, does not flush)
@@ -29,6 +30,11 @@ export const {input: [cmd, filePath], flags} = meow(`
 			type: "string",
 			alias: "p",
 			"default": "1337"
+		},
+		database: {
+			type: "string",
+			alias: "d",
+			"default": "db.json"
 		},
 		flush: {
 			type: "boolean",

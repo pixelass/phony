@@ -7,8 +7,9 @@ async function phony(cmd, filePath, flags) {
 	const cwd = process.cwd();
 	const resolvedPath = path.resolve(cwd, filePath);
 	const port = flags.port;
+	const database = flags.database;
 	if (cmd === "graphql") {
-		const dbPath = path.resolve(cwd, "db.json");
+		const dbPath = path.resolve(cwd, database);
 		const shouldExport = !!flags["export-schema"];
 		const shouldServe = !flags["no-serve"];
 		const shouldFlush = !!flags.flush;
