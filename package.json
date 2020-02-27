@@ -22,7 +22,7 @@
     "examples:graphql": "lerna run start --scope @examples/graphql --stream",
     "toc": "npx markdown-toc -i README.md",
     "watch": "lerna run watch --parallel",
-    "deploy": "lerna run docs && gh-pages -d 'web/docs/public'"
+    "deploy": "rm -rf node_modules/gh-pages/.cache && lerna run docs:build && gh-pages -d 'web/docs/public'"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

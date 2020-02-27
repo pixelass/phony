@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "docs:develop": "gatsby develop",
-    "docs": "gatsby build"
+    "docs:build": "gatsby build --prefix-paths"
   },
   "dependencies": {
     "gatsby": "^2.15.9",
