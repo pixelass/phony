@@ -20,8 +20,8 @@ export const POTENTIALLY_REQUIRED = [
 	"phone",
 	"tel"
 ];
-export const ID = "ID";
-export const ID_SUFFIX = "_${ID}";
+export const ID = "id";
+export const ID_SUFFIX = `_${ID}`;
 export const ID_SUFFIX_PATTERN = new RegExp(`${ID_SUFFIX}$`);
 export const NL = "\n";
 export const __ = "\t";
