@@ -1,6 +1,8 @@
 import chunk from "lodash.chunk";
 import * as fs from "fs";
+import * as path from "path";
 import pify from "pify";
+import mkdirp from "mkdirp";
 export {
 	isNull,
 	isArray,
@@ -15,11 +17,20 @@ export {
 	isEmptyString
 } from "is-what";
 import pluralize from "pluralize";
-import {ID, ID_SUFFIX, NL, NL__, __} from "./constants";
-import {SortOrder} from "./types";
-export {ID, ID_SUFFIX, NL, NL__, __,  SortOrder};
+import { ID, ID_SUFFIX, NL, NL__, __ } from "./constants";
+import { SortOrder } from "./types";
+export { ID, ID_SUFFIX, NL, NL__, __, SortOrder };
 
-export const { readFile, writeFile } = pify(fs);
+const { writeFile: writeFileP } = pify(fs);
+
+export function writeFile(p: string, c: string) {
+	const { dir } = path.parse(p);
+	return mkdirp(dir)
+		.then(() => writeFileP(p, c))
+		.catch(error => {
+			console.error(error);
+		});
+}
 
 export { pluralize };
 
@@ -40,11 +51,11 @@ export function isInteger(n: number): boolean {
 }
 
 export function isId(str) {
-	return str === ID
+	return str === ID;
 }
 
 export function isRelative(str) {
-	return str.endsWith(ID_SUFFIX)
+	return str.endsWith(ID_SUFFIX);
 }
 
 export function isCapitalized(str) {
@@ -60,7 +71,7 @@ export function capitalize(str: string) {
 }
 
 export function embrace(str) {
-	return `{${NL__}${str}${NL}}`
+	return `{${NL__}${str}${NL}}`;
 }
 
 export function arrToIndentString(arr: string[]) {

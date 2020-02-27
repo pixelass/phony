@@ -1,7 +1,7 @@
 import {capitalize, pluralize} from "@phony/utils";
 import {Names} from "./types";
 
-export function getNames(key): Names {
+export function getNames(key: string): Names {
 	const cap = capitalize(key);
 	const sing = pluralize.singular(cap);
 	const create = `create${sing}`;

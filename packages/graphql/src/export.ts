@@ -1,19 +1,22 @@
-import * as path from "path";
 import cloneDeep from "lodash.clonedeep";
-import { CWD } from "./constants";
 import { buildRelations } from "./utils/relations";
-import { exportSchema as exportPhonySchema } from "./utils/schema";
 import { Database } from "./utils/types";
 import { buildTypeDefs } from "./utils/type-builders";
+import { writeFile } from "@phony/utils";
 
-async function exportSchema(
-	json: Database,
-	schemaPath: string
-) {
+async function exportSchema(json: Database, filePath: string): Promise<boolean> {
 	const rawData = cloneDeep(json);
 	const data = buildRelations(rawData);
 	const typeDefs = buildTypeDefs(data);
-	await exportPhonySchema(typeDefs, path.resolve(CWD, schemaPath));
+	return await writeFile(filePath, typeDefs)
+		.then(() => {
+			console.log(`schema has been exported to ${filePath}`);
+			return true;
+		})
+		.catch(error => {
+			console.error(error);
+			return false;
+		});
 }
 
 export default exportSchema;

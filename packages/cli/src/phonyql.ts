@@ -6,17 +6,16 @@ import * as path from "path";
 import { existsSync } from "fs";
 import { AnyFlags } from "meow";
 
-async function phonyql(filePath: string, flags: AnyFlags): Promise<boolean | void> {
+async function phonyql(filePath: string, flags: AnyFlags): Promise<boolean> {
 	const cwd = process.cwd();
 	const resolvedPath = path.resolve(cwd, filePath);
-	const port = flags.port;
-	const database = flags.database;
-	const databasePath = path.resolve(cwd, database as string);
+	const { port, database, schema } = flags;
 	const shouldServe = !flags["no-serve"];
 	const shouldFlush = !!flags.flush;
 	const shouldInit = !!flags.init;
 	const shouldExport = !!flags.export;
-	const schemaPath = flags.schema;
+	const databasePath = path.resolve(cwd, database as string);
+	const schemaPath = path.resolve(cwd, schema as string);
 	if (shouldInit || shouldFlush) {
 		if (!existsSync(databasePath) || shouldFlush) {
 			await flush(require(resolvedPath), databasePath);
@@ -32,10 +31,12 @@ async function phonyql(filePath: string, flags: AnyFlags): Promise<boolean | voi
 					"Database does not exist. Please make sure it has been created or pass the --init flag"
 				)
 			);
-			return;
+			return false;
 		}
 		return await phonyGraphql(require(databasePath), databasePath, port as string);
 	}
 }
 
-phonyql(filePath, flags);
+phonyql(filePath, flags).then(r => r).catch(error => {
+	console.error(error);
+});

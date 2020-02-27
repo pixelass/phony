@@ -11,10 +11,10 @@ async function serve(
 	json: Database,
 	databasePath: string,
 	port: string | number = 1337
-): Promise<void> {
+): Promise<boolean> {
 	const data = buildRelations(json);
 	const typeDefs = buildTypeDefs(data);
-	await phonyServe(
+	return await phonyServe(
 		{
 			schema: buildSchema(typeDefs),
 			rootValue: buildRoot(data, json, path.resolve(CWD, databasePath))
