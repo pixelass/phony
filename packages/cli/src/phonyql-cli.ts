@@ -1,12 +1,12 @@
 import meow from "meow";
 
 export const {
-	input: [cmd, filePath = "db.js"],
+	input: [filePath = "db.js"],
 	flags
 } = meow(
 	`
 Usage
-  $ phony graphql <input> [...flags]
+  $ phonyql <input> [...flags]
 
 Options
   --export, -e    schema will be exported when true
@@ -18,8 +18,8 @@ Options
   --port, -p      port for graphql service
 
 Examples
-$ phony graphql -i
-$ phony graphql my-database.js -s my-schema.grahphl -e
+$ phonyql -i
+$ phonyql my-database.js -s my-schema.grahphl -e
 `,
 	{
 		flags: {

@@ -5,22 +5,22 @@ module.exports = {
 			title: "Lorem Ipsum",
 			view_count: 254,
 			user_id: 123,
-			created: new Date("2016-07-03"),
-			updated: new Date("2016-07-06")
+			created: new Date("2016-11-15"),
+			updated: new Date("2016-11-16")
 		},
 		{
 			id: 2,
 			title: "Sic Dolor amet",
 			view_count: 65,
 			user_id: 456,
-			created: new Date("2016-07-03")
+			created: new Date("2016-09-21")
 		},
 		{
 			id: 3,
 			title: "Ridetis foris ducunt ad nobilis pars",
 			view_count: 198,
 			user_id: 456,
-			created: new Date("2016-07-03"),
+			created: new Date("2016-03-15"),
 			updated: new Date("2016-07-06")
 		},
 		{
@@ -28,8 +28,7 @@ module.exports = {
 			title: "Calcaria velox resistentia est",
 			view_count: 271,
 			user_id: 456,
-			created: new Date("2016-07-03"),
-			updated: new Date("2016-07-06")
+			created: new Date("2016-11-02"),
 		}
 	],
 	users: [
@@ -39,7 +38,7 @@ module.exports = {
 			email: "john@doe.com",
 			company: "Doe Inc.",
 			bio: "Germanus, regius valebats etiam contactus de magnum, raptus burgus.",
-			created: new Date("2016-07-03"),
+			created: new Date("2015-01-03"),
 			updated: new Date("2017-01-03")
 		},
 		{
@@ -48,7 +47,7 @@ module.exports = {
 			email: "jane@doe.com",
 			company: "Doe Inc.",
 			bio: "Apolloniatess cantare! Clabulare nobilis gemna est.",
-			created: new Date("2016-10-12")
+			created: new Date("2015-10-12")
 		}
 	],
 	comments: [

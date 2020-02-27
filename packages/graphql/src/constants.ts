@@ -1,3 +1,5 @@
+import {__, ID_SUFFIX} from "@phony/utils";
+
 export const TYPES = {
 	id: "ID",
 	object: "JSON",
@@ -20,15 +22,13 @@ export const POTENTIALLY_REQUIRED = [
 	"phone",
 	"tel"
 ];
-export const ID = "id";
-export const ID_SUFFIX = `_${ID}`;
+
 export const ID_SUFFIX_PATTERN = new RegExp(`${ID_SUFFIX}$`);
-export const NL = "\n";
-export const __ = "\t";
-export const NL__ = `${NL}${__}`;
+
 export const META_DATA_TYPE = `type MetaData {
 ${__}count: Int!
 }`;
+
 export const PAGINATION_TYPE = `input Pagination {
 ${__}page: Int
 ${__}pageSize: Int
@@ -44,4 +44,5 @@ enum SortOrder {
 ${__}asc
 ${__}desc
 }`;
+
 export const CWD = process.cwd();

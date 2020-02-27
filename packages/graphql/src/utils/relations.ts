@@ -1,7 +1,7 @@
-import {Database} from "./types";
+import { Database } from "./types";
 import cloneDeep from "lodash.clonedeep";
-import {capitalize, isRelative, isSame, pluralize, isArray} from "@phony/utils";
-import {ID_SUFFIX_PATTERN} from "../constants";
+import { capitalize, isRelative, isSame, pluralize, isArray } from "@phony/utils";
+import { ID_SUFFIX_PATTERN } from "../constants";
 
 export function buildRelations(json: Database): Database {
 	const data: Database = cloneDeep(json);
@@ -18,15 +18,18 @@ export function buildRelations(json: Database): Database {
 					const parent = collection.find(isSame(id));
 					const isParent = item === parent;
 					const children = item[upperKey];
-					const hasChildren = Array.isArray(children);
+					const hasChildren = isArray(children);
 					if (isParent && hasChildren) {
+						// Add entry to collection
 						children.push(entry);
 					} else if (isParent) {
+						// Add collection with one entry
 						item[upperKey] = [entry];
 					} else if (!hasChildren) {
+						// Always ensure an empty collection for all siblings
 						item[upperKey] = [];
 					}
-					if (!Array.isArray(entry[upperPropName])) {
+					if (!isArray(entry[upperPropName])) {
 						entry[upperPropName] = parent;
 					}
 				});

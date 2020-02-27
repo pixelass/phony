@@ -10,7 +10,7 @@
     "url": "https://pixelass.com"
   },
   "bin": {
-    "phony": "bin.js"
+    "phonyql": "phonyql.js"
   },
   "directories": {
     "lib": "dist",

@@ -9,32 +9,37 @@ module.exports = function() {
 	const cwd = process.cwd();
 	const pkg = require(path.resolve(cwd, "package.json"));
 	const tsconfig = path.resolve(cwd, "tsconfig.json");
-	return [
-		{
-			input: "src/bin.ts",
-			external: [
-				...Object.keys(pkg.dependencies || {})
-			],
-			output: [
-				{
-					banner: createBanner(pkg),
-					file: `dist/${pkg.bin.phony}`,
-					format: "cjs"
-				}
-			],
-			plugins: [
-				commonjs(),
-				json(),
-				babel(),
-				typescript({
-					tsconfig,
-					tsconfigOverride: {
-						compilerOptions: {
-							module: "es6"
-						}
-					}
-				})
-			]
-		}
+	const external = [
+		...Object.keys(pkg.dependencies || {})
 	];
+	const plugins = [
+		commonjs(),
+		json(),
+		babel(),
+		typescript({
+			tsconfig,
+			tsconfigOverride: {
+				compilerOptions: {
+					module: "es6"
+				}
+			}
+		})
+	]
+	return Object.entries(pkg.bin).map(([, input]) => ({
+		input: `src/${input}`.replace(".js", ".ts"),
+		external,
+		output: [
+			{
+				banner: createBanner(pkg),
+				file: `dist/${input}`,
+				format: "cjs"
+			},
+			{
+				banner: createBanner(pkg),
+				file: `dist/esm/${input}`,
+				format: "esm"
+			}
+		],
+		plugins
+	}));
 };

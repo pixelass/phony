@@ -1,3 +1,5 @@
+import {SortOrder} from "@phony/utils";
+
 export interface DatabaseEntry {
 	[key: string]: any;
 }
@@ -20,14 +22,10 @@ export type RootFunction = (...args: any[]) => any
 export interface Root {
 	[key: string]: RootFunction
 }
-type SortField = string;
 
-enum SortOrder {
-	asc,
-	desc
-}
+export type SortField = string;
 
-interface Sorting {
+export interface Sorting {
 	field: SortField
 	order: SortOrder
 }

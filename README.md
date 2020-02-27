@@ -54,13 +54,13 @@ Phony can be used via the cli or in node.js
 
 ```bash
 ## run server with initialized database
-phony graphql --init
+phonyql --init
 ## run server with flushed database
-phony graphql --flush
+phonyql --flush
 ## flush database only
-phony graphql --flush --no-serve
+phonyql --flush --no-serve
 ## export schema to custom file from custom db
-phony graphql my-database.js --schema my-schema.grahphl --export
+phonyql my-database.js --schema my-schema.grahphl --export
 ```
 
 ```

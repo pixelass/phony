@@ -15,7 +15,9 @@ export {
 	isEmptyString
 } from "is-what";
 import pluralize from "pluralize";
-import {ID, ID_SUFFIX, NL, NL__} from "./constants";
+import {ID, ID_SUFFIX, NL, NL__, __} from "./constants";
+import {SortOrder} from "./types";
+export {ID, ID_SUFFIX, NL, NL__, __,  SortOrder};
 
 export const { readFile, writeFile } = pify(fs);
 
@@ -54,8 +56,7 @@ export function withRequired(condition) {
 }
 
 export function capitalize(str: string) {
-	const [first, ...rest] = str.split("");
-	return `${first.toUpperCase()}${rest.join("")}`;
+	return `${str[0].toUpperCase()}${str.slice(1)}`;
 }
 
 export function embrace(str) {
@@ -84,7 +85,7 @@ export function sortByField(field) {
 
 export function withSorting(collection, sorting) {
 	const sortedByField = collection.sort(sortByField(sorting.field));
-	if (sorting.order !== "desc") {
+	if (sorting.order !== SortOrder.desc) {
 		return sortedByField.reverse();
 	}
 	return sortedByField;
