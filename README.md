@@ -4,23 +4,25 @@
 <big>Phony is a collection of phony (mock) services.  
 Its main purpose is to provide a mocked graphql service</big>  
 <br/><br/>
+
 <!-- toc -->
 
 - [Install](#install)
-  - [yarn](#yarn)
-  - [npm](#npm)
+  * [yarn](#yarn)
+  * [npm](#npm)
 - [Usage](#usage)
-  - [cli](#cli)
-  - [node.js](#nodejs)
+  * [cli](#cli)
+  * [node.js](#nodejs)
 - [Features](#features)
-- [example scheme](#example-scheme)
+- [Examples](#examples)
+- [Example schema](#example-schema)
 - [Example Mutation](#example-mutation)
-  - [Mutation](#mutation)
-  - [Mutation variables](#mutation-variables)
-  - [Mutation data](#mutation-data)
+  * [Mutation](#mutation)
+  * [Mutation variables](#mutation-variables)
+  * [Mutation data](#mutation-data)
 - [Example Query](#example-query)
-  - [Query](#query)
-  - [Query data](#query-data)
+  * [Query](#query)
+  * [Query data](#query-data)
 - [Example data](#example-data)
 
 <!-- tocstop -->
@@ -92,7 +94,7 @@ const db = require("./db");
 - build a graphql service from JSON
 - build a local database from JSON
 - allow flushing the local database (reset)
-- export the generated typeDefs in a `scheme.graphql` file
+- export the generated typeDefs in a `schema.graphql` file
 - persistent local database (persists until flushed)
 - automatic queries and mutations (i.e. `[name]` = `User`)
   - `get[name]s(pagination: Pagination)`: returns all items with optional pagination and sorting
@@ -104,7 +106,14 @@ const db = require("./db");
 
 inspired by https://github.com/marmelab/json-graphql-server/
 
-## example scheme
+## Examples
+
+Please take a look at the Examples.
+
+* [cli](https://github.com/pixelass/phony/tree/master/examples/cli)
+* [node.js](https://github.com/pixelass/phony/tree/master/examples/graphql)
+
+## Example schema
 
 Here is an example of what is generated for Post.
 
@@ -188,7 +197,7 @@ mutation example($input: UserUpdateInput!) {
 
 ## Example Query
 
-http://localhost:3001/?query=%7B%0A%20%20getPost(id%3A%20%221%22)%20%7B%0A%20%20%20%20title%0A%20%20%20%20view_count%0A%20%20%20%20created%0A%20%20%20%20updated%0A%20%20%20%20User%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%7D%0A%20%20%20%20Comments%20%7B%0A%20%20%20%20%20%20body%0A%20%20%20%20%20%20created%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20_getPostsMeta%20%7B%0A%20%20%20%20count%0A%20%20%7D%0A%7D%0A
+http://localhost:1337/?query=%7B%0A%20%20getPost(id%3A%20%221%22)%20%7B%0A%20%20%20%20title%0A%20%20%20%20view_count%0A%20%20%20%20created%0A%20%20%20%20updated%0A%20%20%20%20User%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%7D%0A%20%20%20%20Comments%20%7B%0A%20%20%20%20%20%20body%0A%20%20%20%20%20%20created%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20_getPostsMeta%20%7B%0A%20%20%20%20count%0A%20%20%7D%0A%7D%0A
 
 ### Query
 
