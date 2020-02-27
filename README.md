@@ -230,7 +230,7 @@ http://localhost:1337/?query=%7B%0A%20%20getPost(id%3A%20%221%22)%20%7B%0A%20%20
     "getPost": {
       "title": "Lorem Ipsum",
       "view_count": 254,
-      "created": "2016-07-03T00:00:00.000Z",
+      "created": "2015-02-01T00:00:00.000Z",
       "updated": "2016-07-06T00:00:00.000Z",
       "User": {
         "name": "John Doe"
@@ -238,7 +238,7 @@ http://localhost:1337/?query=%7B%0A%20%20getPost(id%3A%20%221%22)%20%7B%0A%20%20
       "Comments": [
         {
           "body": "Consectetur adipiscing elit",
-          "created": "2017-07-03T00:00:00.000Z"
+          "created": "2017-02-19T00:00:00.000Z"
         },
         {
           "body": "Nam molestie pellentesque dui",
@@ -263,7 +263,7 @@ module.exports = {
       title: "Lorem Ipsum",
       view_count: 254,
       user_id: 123,
-      created: new Date("2016-07-03"),
+      created: new Date("2015-02-01"),
       updated: new Date("2016-07-06")
     },
     {
@@ -271,23 +271,7 @@ module.exports = {
       title: "Sic Dolor amet",
       view_count: 65,
       user_id: 456,
-      created: new Date("2016-07-03")
-    },
-    {
-      id: 3,
-      title: "Ridetis foris ducunt ad nobilis pars",
-      view_count: 198,
-      user_id: 456,
-      created: new Date("2016-07-03"),
-      updated: new Date("2016-07-06")
-    },
-    {
-      id: 4,
-      title: "Calcaria velox resistentia est",
-      view_count: 271,
-      user_id: 456,
-      created: new Date("2016-07-03"),
-      updated: new Date("2016-07-06")
+      created: new Date("2015-09-13")
     }
   ],
   users: [
@@ -297,7 +281,7 @@ module.exports = {
       email: "john@doe.com",
       company: "Doe Inc.",
       bio: "Germanus, regius valebats etiam contactus de magnum, raptus burgus.",
-      created: new Date("2016-07-03"),
+      created: new Date("2016-11-21"),
       updated: new Date("2017-01-03")
     },
     {
