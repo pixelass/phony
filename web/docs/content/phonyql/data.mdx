@@ -1,0 +1,210 @@
+---
+title: "Data"
+description: "Phony builds a schema from your data"
+---
+
+## Data model
+
+The first entry needs to have all properties defined while the second one only
+needs the required properties. Phony looks up the first entry and uses it to
+build the type.
+
+```js
+module.exports = {
+	users: [
+		{
+			name: "John Doe",
+			id: 123
+		},
+		{
+			name: "Jane Doe",
+			id: 456
+		}
+	]
+};
+```
+
+will expose the following schema
+
+```graphql
+type Query {
+	getUsers(pagination: Pagination): [User]
+	getUser(id: ID!): User
+	_getUsersMeta: MetaData
+}
+
+type Mutation {
+	createUser(input: UserInput!): User
+	updateUser(id: ID!, input: UserUpdateInput!): User
+	deleteUser(id: ID!): Boolean
+}
+
+input Pagination {
+	page: Int
+	pageSize: Int
+	sorting: Sorting
+}
+
+input Sorting {
+	field: String!
+	order: SortOrder!
+}
+
+enum SortOrder {
+	asc
+	desc
+}
+
+type MetaData {
+	count: Int!
+}
+
+type User {
+	name: String!
+	id: ID!
+}
+
+input UserInput {
+	name: String!
+}
+
+input UserUpdateInput {
+	name: String
+}
+```
+
+## Phony generated dates
+
+Phony uses the `created` and `updated` properties of entries. These are added
+when mutations write to the local database.
+If you want to use them you should add them to your data so they will be picked
+up by the query. If you don't need them they will simply be ignored.
+
+```js
+module.exports = {
+	users: [
+		{
+			name: "John Doe",
+			id: 123,
+			created: new Date("2020-01-01"),
+			updated: new Date("2020-02-01")
+		},
+		{
+			name: "Jane Doe",
+			id: 456,
+			created: new Date("2020-02-11")
+		}
+	]
+};
+```
+
+**Available on `User`**
+
+```graphql
+type User {
+	name: String!
+	id: ID!
+	created: String!
+	updated: String!
+}
+```
+
+## Relationships
+
+You can link items from different collections.
+
+### Example Data
+
+```js
+module.exports = {
+	posts: [
+		{
+			id: 1,
+			title: "Lorem Ipsum",
+			user_id: 123
+		},
+		{
+			id: 2,
+			title: "Sic Dolor amet",
+			user_id: 456
+		}
+	],
+	users: [
+		{
+			id: 123,
+			name: "John Doe"
+		},
+		{
+			id: 456,
+			name: "Jane Doe"
+		}
+	],
+	comments: [
+		{
+			id: 987,
+			post_id: 1,
+			body: "Consectetur adipiscing elit"
+		},
+		{
+			id: 995,
+			post_id: 1,
+			body: "Nam molestie pellentesque dui"
+		}
+	]
+};
+```
+
+### Many to One
+
+```graphql
+{
+	getPost(id: 1) {
+		title
+		User {
+			name
+		}
+	}
+}
+```
+
+```json
+{
+	"data": {
+		"getPost": {
+			"title": "Lorem Ipsum",
+			"User": {
+				"name": "John Doe"
+			}
+		}
+	}
+}
+```
+
+### One to Many
+
+```graphql
+{
+	getPost(id: 1) {
+		title
+		Comments {
+			body
+		}
+	}
+}
+```
+
+```json
+{
+	"data": {
+		"getPost": {
+			"title": "Lorem Ipsum",
+			"Comments": [
+				{ "body": "Consectetur adipiscing elit" },
+				{ "body": "Nam molestie pellentesque dui" }
+			]
+		}
+	}
+}
+```
+
+

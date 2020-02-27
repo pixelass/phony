@@ -1,0 +1,91 @@
+---
+title: 'Options'
+description: 'Detailed options examples for @phony/cli'
+---
+
+## Initialize Database
+
+Phony requires a local copy of your database to allow persisting the data
+changes via mutations.
+To make sure you always have a local copy you can add the `--init,-i` flag.
+This will flush the database to a local copy if the file does not exist.
+If the file exists, this step is simply skipped.
+
+```bash
+phonyql -i
+```
+
+## Flush Database
+
+You might want to flush the database every time you restart the server.
+Adding the `--flush,-f` flag makes sure your database is always reset to its
+initial state.
+
+```bash
+phonyql -f
+```
+
+You can additionally pass the `--no-serve,-n` flag if you don't
+want to start the server
+
+```bash
+phonyql -fn
+```
+
+## Custom input
+
+While Phony looks for the `db.js` file in your `cwd`, you can specify a custom
+file as second argument. It can be helpful
+when you need to run several servers or have a certain folder/file structure.
+
+```bash
+phonyql my-database.js
+## phonyql some/deep/folder/my-database.js
+```
+
+## Custom output
+
+You can define the destination file of the local database with the `--database,-d` flag.
+This will change the location and name of your local database. It can be helpful
+when you need to run several servers or have a certain folder/file structure.
+The default file will be written to `[cwd]/db.json`.
+
+```bash
+phonyql -d my-database.json
+## phonyql -d some/deep/folder/my-database.json
+```
+
+## Custom port
+
+You can define the port of the local network with the `--port,-p` flag.
+It can be helpful when you need to run several servers or port `1337` is taken.
+The default port is `1337`.
+
+```bash
+phonyql -p 3000
+```
+
+## Export schema
+
+Using the `--export,-e` flag you can export the generated schema.
+This can be useful if you want to build your production service from this setup.
+
+```bash
+phonyql -e
+```
+
+If you want to specify the schema filename and location you can specify it using
+the `--schema,-s` flag
+
+```bash
+phonyql -es my-schema.graphql
+## phonyql -es some/deep/folder/my-schema.graphql
+```
+
+## Running two instances
+
+You can run two or more instances using tools like [concurrently](https://www.npmjs.com/package/concurrently)
+
+```bash
+concurrently "phonyql one.js -d one.json -p 3001" "phonyql two.js -d two.json -p 3002"
+```

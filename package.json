@@ -10,7 +10,8 @@
   },
   "workspaces": [
     "examples/*",
-    "packages/*"
+    "packages/*",
+    "web/*"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -20,7 +21,8 @@
     "cli:help": "lerna exec 'yarn phony --help' --scope @examples/cli --stream",
     "examples:graphql": "lerna run start --scope @examples/graphql --stream",
     "toc": "npx markdown-toc -i README.md",
-    "watch": "lerna run watch --parallel"
+    "watch": "lerna run watch --parallel",
+    "deploy": "lerna run docs && gh-pages -d 'web/docs/public'"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -30,6 +32,7 @@
     "@babel/preset-typescript": "^7.8.3",
     "@types/node": "^12.12.6",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "gh-pages": "^2.2.0",
     "lerna": "^3.20.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",

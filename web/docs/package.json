@@ -1,0 +1,20 @@
+{
+  "name": "docs",
+  "author": {
+    "name": "Gregor Adams",
+    "email": "greg@pixelass.com",
+    "url": "https://pixelass.com"
+  },
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "docs:develop": "gatsby develop",
+    "docs": "gatsby build"
+  },
+  "dependencies": {
+    "gatsby": "^2.15.9",
+    "gatsby-theme-document": "1.0.8",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  }
+}
