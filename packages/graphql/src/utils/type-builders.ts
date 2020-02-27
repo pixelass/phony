@@ -136,10 +136,10 @@ export function buildTypeDefs(json: Database) {
 				removables.filter(removable => x.endsWith(`_${removable}`)).length ||
 				isCapitalized(x)
 		);
-		const initialProps = omit(first, ["id", ...removals.filter(x => !x.endsWith("_id"))]);
+		const initialProps = omit(first, ["id", ...removals.filter(x => !isRelative(x))]);
 		const initialUpdateProps = omit(
 			first,
-			[...Object.keys(first).map(x => (x.endsWith("_id") ? x : null)), ...removals].filter(
+			["id", ...Object.keys(first).map(x => (isRelative(x) ? x : null)), ...removals].filter(
 				Boolean
 			)
 		);
@@ -147,8 +147,8 @@ export function buildTypeDefs(json: Database) {
 		buildTypes(initialUpdateProps, key, phonyInputs, buildPhonyUpdateInput);
 		const type = buildTypes(first, key, []);
 		const singularType = pluralize.singular(type);
-		const create = `${names.create}(input: ${singularType}Input): ${singularType}`;
-		const update = `${names.update}(input: ${singularType}UpdateInput): ${singularType}`;
+		const create = `${names.create}(input: ${singularType}Input!): ${singularType}`;
+		const update = `${names.update}(id: ID!, input: ${singularType}UpdateInput!): ${singularType}`;
 		const del = `${names.del}(id: ID!): Boolean`;
 		return `${current}\n  ${create}\n  ${update}\n  ${del}`;
 	}, "");

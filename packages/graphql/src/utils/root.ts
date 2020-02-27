@@ -33,13 +33,13 @@ export function buildRoot(data: Database, plainData: Database, filePath): Root {
 				await updateDB(plainData, filePath);
 				return newObj;
 			},
-			[names.update]: async ({input: {id, ...args}}) => {
+			[names.update]: async ({id, input}) => {
 				const compare = isSame(id);
 				const item = collection.find(compare);
 				const itemIndex = collection.findIndex(compare);
 				const plainItem = plainCollection.find(compare);
 				const newObj = {
-					...args,
+					...input,
 					updated: new Date()
 				};
 				const newItem = {...item, ...newObj};
@@ -49,7 +49,7 @@ export function buildRoot(data: Database, plainData: Database, filePath): Root {
 				await updateDB(plainData, filePath);
 				return newItem;
 			},
-			[names.del]: async id => {
+			[names.del]: async ({id}) => {
 				const compare = isSame(id);
 				collection = collection.filter(compare);
 				plainCollection = plainCollection.filter(compare);
