@@ -48,11 +48,22 @@ module.exports = {
 			email: "jane@doe.com",
 			company: "Doe Inc.",
 			bio: "Apolloniatess cantare! Clabulare nobilis gemna est.",
-			created: new Date("2016-10-12"),
+			created: new Date("2016-10-12")
 		}
 	],
 	comments: [
-		{ id: 987, post_id: 1, body: "Consectetur adipiscing elit", created: new Date("2017-02-19"), updated: new Date("2017-02-09") },
-		{ id: 995, post_id: 1, body: "Nam molestie pellentesque dui", created: new Date("2017-08-17") }
+		{
+			id: 987,
+			post_id: 1,
+			body: "Consectetur adipiscing elit",
+			created: new Date("2017-02-19"),
+			updated: new Date("2017-02-09")
+		},
+		{
+			id: 995,
+			post_id: 1,
+			body: "Nam molestie pellentesque dui",
+			created: new Date("2017-08-17")
+		}
 	]
 };
