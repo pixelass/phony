@@ -1,26 +1,26 @@
-# 👺 phony
+# phony
 
-Phony is a collection of phony (mock) services.  
-Its main purpose is to provide a mocked graphql service
-
+<p align="center"><img src="https://raw.githubusercontent.com/pixelass/phony/master/resources/logo.jpg" alt="phony logo" width="200"/></p>
+<big>Phony is a collection of phony (mock) services.  
+Its main purpose is to provide a mocked graphql service</big>  
+<br/><br/>
 <!-- toc -->
 
 - [Install](#install)
-  * [yarn](#yarn)
-  * [npm](#npm)
+  - [yarn](#yarn)
+  - [npm](#npm)
 - [Usage](#usage)
-  * [cli](#cli)
-  * [node.js](#nodejs)
+  - [cli](#cli)
+  - [node.js](#nodejs)
 - [Features](#features)
 - [example scheme](#example-scheme)
-- [Graphiql](#graphiql)
 - [Example Mutation](#example-mutation)
-  * [Mutation](#mutation)
-  * [Mutation variables](#mutation-variables)
-  * [Mutation data](#mutation-data)
+  - [Mutation](#mutation)
+  - [Mutation variables](#mutation-variables)
+  - [Mutation data](#mutation-data)
 - [Example Query](#example-query)
-  * [Query](#query)
-  * [Query data](#query-data)
+  - [Query](#query)
+  - [Query data](#query-data)
 - [Example data](#example-data)
 
 <!-- tocstop -->
@@ -33,11 +33,13 @@ Phony is a mono-repository and is available on npm under the `@phony` namespace
 > This is still a prototype. You can clone/fork this repository to test it locally
 
 ### yarn
+
 ```bash
 yarn add @phony/cli @phony/graphlql
 ```
 
 ### npm
+
 ```bash
 npm install  @phony/cli @phony/graphlql
 ```
@@ -58,6 +60,7 @@ phony graphql --flush --no-serve
 ## export schema to custom file from custom db
 phony graphql my-database.js --schema my-schema.grahphl --export
 ```
+
 ```
 Options
   --export, -e    schema will be exported when true
@@ -68,6 +71,7 @@ Options
   --init, -i      initializes the local database (only if it doesn't exist, does not flush)
   --port, -p      port for graphql service
 ```
+
 ### node.js
 
 ```js
@@ -77,30 +81,28 @@ const path = require("path");
 const db = require("./db");
 
 (async function() {
-	const filePath = path.resolve(__dirname, "db.json");
-	await flush(db, filePath);
-	await serve(db, filePath);
+  const filePath = path.resolve(__dirname, "db.json");
+  await flush(db, filePath);
+  await serve(db, filePath);
 })();
 ```
 
-
 ## Features
 
-* build a graphql service from JSON
-* build a local database from JSON
-* allow flushing the local database (reset)
-* export the generated typeDefs in a `scheme.graphql` file
-* persistent local database (persists until flushed)
-* automatic queries and mutations (i.e. `[name]` = `User`)
-  * `get[name]s(pagination: Pagination)`: returns all items with optional pagination and sorting
-  * `get[name](id: ID!)`: returns item with matching id
-  * `_get[name]Meta`: get meta info (`{count: Int!}`)
-  * `create[name](input: [name]Input)`: add new item from given input
-  * `update[name](input: [name]Input)`: update item with given input
-  * `delete[name](id: ID!)`: deleteItem
+- build a graphql service from JSON
+- build a local database from JSON
+- allow flushing the local database (reset)
+- export the generated typeDefs in a `scheme.graphql` file
+- persistent local database (persists until flushed)
+- automatic queries and mutations (i.e. `[name]` = `User`)
+  - `get[name]s(pagination: Pagination)`: returns all items with optional pagination and sorting
+  - `get[name](id: ID!)`: returns item with matching id
+  - `_get[name]Meta`: get meta info (`{count: Int!}`)
+  - `create[name](input: [name]Input)`: add new item from given input
+  - `update[name](input: [name]Input)`: update item with given input
+  - `delete[name](id: ID!)`: deleteItem
 
 inspired by https://github.com/marmelab/json-graphql-server/
-
 
 ## example scheme
 
@@ -145,10 +147,6 @@ input PostUpdateInput {
 }
 ```
 
-## Graphiql
-
-Graphiql is enabled. The following query will return this output
-
 ## Example Mutation
 
 http://localhost:1337/?query=mutation%20example(%24input%3A%20UserUpdateInput!)%7B%0A%20%20updateUser(input%3A%20%24input)%20%7B%0A%20%20%20%20company%0A%20%20%09name%0A%20%20%7D%0A%7D&operationName=example&variables=%7B%0A%20%20%22input%22%3A%20%7B%0A%20%20%20%20%22id%22%3A%20123%2C%0A%20%20%20%20%22company%22%3A%20%22Doe%20Corp.%22%0A%20%20%7D%0A%7D
@@ -156,10 +154,10 @@ http://localhost:1337/?query=mutation%20example(%24input%3A%20UserUpdateInput!)%
 ### Mutation
 
 ```graphql
-mutation example($input: UserUpdateInput!){
+mutation example($input: UserUpdateInput!) {
   updateUser(input: $input) {
     company
-  	name
+    name
   }
 }
 ```
@@ -246,7 +244,6 @@ http://localhost:3001/?query=%7B%0A%20%20getPost(id%3A%20%221%22)%20%7B%0A%20%20
 }
 ```
 
-
 ## Example data
 
 ```js
@@ -266,6 +263,22 @@ module.exports = {
       view_count: 65,
       user_id: 456,
       created: new Date("2016-07-03")
+    },
+    {
+      id: 3,
+      title: "Ridetis foris ducunt ad nobilis pars",
+      view_count: 198,
+      user_id: 456,
+      created: new Date("2016-07-03"),
+      updated: new Date("2016-07-06")
+    },
+    {
+      id: 4,
+      title: "Calcaria velox resistentia est",
+      view_count: 271,
+      user_id: 456,
+      created: new Date("2016-07-03"),
+      updated: new Date("2016-07-06")
     }
   ],
   users: [
@@ -274,14 +287,17 @@ module.exports = {
       name: "John Doe",
       email: "john@doe.com",
       company: "Doe Inc.",
-      bio: "Germanus, regius valebats etiam contactus de magnum, raptus burgus."
+      bio: "Germanus, regius valebats etiam contactus de magnum, raptus burgus.",
+      created: new Date("2016-07-03"),
+      updated: new Date("2017-01-03")
     },
     {
       id: 456,
       name: "Jane Doe",
       email: "jane@doe.com",
       company: "Doe Inc.",
-      bio: "Apolloniatess cantare! Clabulare nobilis gemna est."
+      bio: "Apolloniatess cantare! Clabulare nobilis gemna est.",
+      created: new Date("2016-10-12")
     }
   ],
   comments: [
@@ -289,7 +305,8 @@ module.exports = {
       id: 987,
       post_id: 1,
       body: "Consectetur adipiscing elit",
-      created: new Date("2017-07-03")
+      created: new Date("2017-02-19"),
+      updated: new Date("2017-02-09")
     },
     {
       id: 995,
