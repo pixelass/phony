@@ -32,4 +32,11 @@ ${__}asc
 ${__}desc
 }`;
 
+export const FILTER_TYPE = `
+input Filter {
+${__}fields: Fields
+${__}q: String
+}
+`
+
 export const CWD = process.cwd();

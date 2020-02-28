@@ -132,19 +132,53 @@ export function buildTypes(
 	}
 }
 
+function buildFilter(key, fields, phonyInputs = []) {
+	const name = `${pluralize.singular(capitalize(key))}Filter`;
+	const fieldName = buildFilterFields(key, fields, phonyInputs);
+	const typeDef = buildTypeDef(
+		"input",
+		name,
+		["q: String", `fields: ${fieldName}`]
+	);
+	phonyInputs.push(typeDef);
+	return name
+}
+
+function buildFilterFields(key, fields, phonyInputs = []) {
+	const name = `${pluralize.singular(capitalize(key))}Fields`;
+	const typeDef = buildTypeDef(
+		"input",
+		name,
+		Object.entries(fields).map(([name, value]) => {
+			if (name.endsWith("_count") || isNumber(value) && !isId(name)) {
+				return [`${name}: Int`,...["gt", "gte", "lte", "lt"].map(suffix =>
+					`${name}_${suffix}: Int`)].join(NL__)
+			}
+			return `${name}: String`
+		})
+	);
+	phonyInputs.push(typeDef);
+	return name
+}
+
 export function buildTypeDefs(json: Database) {
 	const phonyTypes = [];
 	const phonyInputs = [];
-	const queryDefs = Object.entries(json).reduce((current, [key, value]) => {
-		const type = buildTypes(value, key, phonyTypes);
+	const queryDefs = Object.entries(json).reduce((current, [key, collection]) => {
+		const type = buildTypes(collection, key, phonyTypes);
 		const names = getNames(key);
-		const getAll = `${names.getAll}(pagination: Pagination): [${type}]`;
+		const [first] = collection;
+		const removals = Object.keys(first).filter(
+			x =>
+				isCapitalized(x) || isRelative(x)
+		);
+		const filter = buildFilter(key, omit(first, removals), phonyInputs);
+		const getAll = `${names.getAll}(pagination: Pagination, filter: ${filter}): [${type}]`;
 		const getById = `${names.getById}(id: ID!): ${type}`;
 		const meta = `${names.meta}: MetaData`;
-		return `${current}${NL__}${getAll}${NL__}${getById}${NL__}${meta}`;
-	}, "");
-	const mutDefs = Object.entries(json).reduce((current, [key]) => {
-		const collection = json[key];
+		return [...current, getAll, getById, meta];
+	}, []);
+	const mutDefs = Object.entries(json).reduce((current, [key, collection]) => {
 		const names = getNames(key);
 		const [first, second] = collection;
 		const removables = ["date", "count", "created", "updated"];
@@ -168,10 +202,10 @@ export function buildTypeDefs(json: Database) {
 		const create = `${names.create}(input: ${singularType}Input!): ${singularType}`;
 		const update = `${names.update}(id: ID!, input: ${singularType}UpdateInput!): ${singularType}`;
 		const del = `${names.del}(id: ID!): Boolean`;
-		return `${current}\n  ${create}\n  ${update}\n  ${del}`;
-	}, "");
-	const query = `type Query {${queryDefs}\n}`;
-	const mut = `type Mutation {${mutDefs}\n}`;
+		return [...current, create, update, del];
+	}, []);
+	const query = buildTypeDef("type", "Query", queryDefs);
+	const mut = buildTypeDef("type", "Mutation", mutDefs);
 	return [
 		query,
 		mut,
