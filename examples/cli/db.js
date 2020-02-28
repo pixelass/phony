@@ -44,9 +44,6 @@ module.exports = {
 		{
 			id: 456,
 			name: "Jane Doe",
-			email: "jane@doe.com",
-			company: "Doe Inc.",
-			bio: "Apolloniatess cantare! Clabulare nobilis gemna est.",
 			created: new Date("2015-10-12")
 		}
 	],

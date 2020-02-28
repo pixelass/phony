@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "phonyql -f",
-    "export": "phonyql users.js -es users/schema.graphql"
+    "export": "phonyql -e"
   },
   "devDependencies": {
     "@phony/cli": "^0.1.0"

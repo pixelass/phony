@@ -23,28 +23,31 @@
     "examples:graphql": "lerna run start --scope @examples/graphql --stream",
     "toc": "npx markdown-toc -i README.md",
     "watch": "lerna run watch --parallel",
-    "deploy": "rm -rf node_modules/gh-pages/.cache && lerna run docs:build && gh-pages -d 'web/docs/public'"
+    "develop": "yarn lerna run docs:develop --stream",
+    "deploy": "rm -rf node_modules/gh-pages/.cache && lerna run docs:build --stream && gh-pages -d 'web/docs/public'",
+    "ncu": "npx npm-check-updates -u; yarn lerna exec 'npx npm-check-updates -u'",
+    "ocd": "npx sort-package-json; lerna exec npx sort-package-json"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.8.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-env": "^7.8.6",
     "@babel/preset-typescript": "^7.8.3",
-    "@types/node": "^12.12.6",
+    "@types/node": "^13.7.6",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "gh-pages": "^2.2.0",
     "lerna": "^3.20.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
-    "rollup": "^1.31.1",
+    "rollup": "^1.32.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-resolve2": "^1.0.0",
     "rollup-plugin-typescript2": "^0.26.0",
     "ts-node": "^8.6.2",
-    "tslib": "^1.11.0",
+    "tslib": "^1.11.1",
     "typescript": "^3.8.2"
   }
 }

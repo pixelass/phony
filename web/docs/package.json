@@ -12,9 +12,9 @@
     "docs:build": "gatsby build --prefix-paths"
   },
   "dependencies": {
-    "gatsby": "^2.15.9",
-    "gatsby-theme-document": "1.0.8",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "gatsby": "^2.19.22",
+    "gatsby-theme-phony-docs": "1.0.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   }
 }

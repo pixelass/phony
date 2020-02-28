@@ -9,10 +9,6 @@ module.exports = {
 			{
 				name: `github`,
 				url: `https://github.com/pixelass/phony`
-			},
-			{
-				name: `github`,
-				url: `https://github.com/pixelass/phony/issues`
 			}
 		],
 		sidebarConfig: {
@@ -20,5 +16,5 @@ module.exports = {
 			ignoreIndex: true
 		}
 	},
-	plugins: [{ resolve: `gatsby-theme-document` }]
+	plugins: [{ resolve: `gatsby-theme-phony-docs` }]
 };
