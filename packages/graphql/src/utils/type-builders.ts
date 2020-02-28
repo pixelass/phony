@@ -44,17 +44,18 @@ export function buildPhonyType({__first, __second, ...content}: {[key: string]: 
 	return typeName;
 }
 
-export function buildPhonyInput(content: any, name: string, phonyTypes: string[]) {
+export function buildPhonyInput({__first, __second, ...content}: any, name: string, phonyTypes: string[]) {
 	const typeName = pluralize.singular(capitalize(name));
+	const data = __first && __second ? __first : content;
 	phonyTypes.push(
 		buildTypeDef(
 			"input",
 			`${typeName}Input`,
-			Object.entries(content).filter(([key]) => key.endsWith("_count")).map(
+			Object.entries(data).map(
 				([key, value]) =>
 					`${key}: ${
-							buildTypes(value, key, phonyTypes, buildPhonyInput)
-					}${withRequired(POTENTIALLY_REQUIRED.includes(key) || isRelative(key))}`
+						buildTypes(value, key, phonyTypes, buildPhonyInput)
+					}${withRequired(withRequired(__second && Object.keys(__second).includes(key)) || isRelative(key))}`
 			)
 		)
 	);
@@ -67,7 +68,7 @@ export function buildPhonyUpdateInput(content: any, name: string, phonyTypes: st
 		buildTypeDef(
 			"input",
 			`${typeName}UpdateInput`,
-			Object.entries(content).filter(([key]) => key.endsWith("_count")).map(
+			Object.entries(content).map(
 				([key, value]) =>
 					`${key}: ${
 						buildTypes(value, key, phonyTypes, buildPhonyUpdateInput)
@@ -128,7 +129,7 @@ export function buildTypeDefs(json: Database) {
 	const mutDefs = Object.entries(json).reduce((current, [key]) => {
 		const collection = json[key];
 		const names = getNames(key);
-		const [first] = collection;
+		const [first, second] = collection;
 		const removables = ["date", "count", "created", "updated"];
 		const removals = Object.keys(first).filter(
 			x =>
@@ -143,7 +144,7 @@ export function buildTypeDefs(json: Database) {
 				Boolean
 			)
 		);
-		buildTypes(initialProps, key, phonyInputs, buildPhonyInput);
+		buildTypes({__first: initialProps, __second: second}, key, phonyInputs, buildPhonyInput);
 		buildTypes(initialUpdateProps, key, phonyInputs, buildPhonyUpdateInput);
 		const type = buildTypes(first, key, []);
 		const singularType = pluralize.singular(type);
