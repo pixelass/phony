@@ -12,7 +12,7 @@ import {
 	isRelative,
 	withRequired,
 	isArray,
-	arrToIndentString
+	arrToIndentString, NL__
 } from "@phony/utils";
 import {META_DATA_TYPE, PAGINATION_TYPE, POTENTIALLY_REQUIRED, TYPES} from "../constants";
 import { Database } from "./types";
@@ -24,19 +24,19 @@ export function buildTypeDef(type: string, name: string, defs: string[]) {
 	return `${type} ${name} ${embrace(arrToIndentString(defs))}`;
 }
 
-export function buildPhonyType(value: any, name: string, phonyTypes: string[]) {
+export function buildPhonyType(content: {[key: string]: any}, name: string, phonyTypes: string[]) {
 	const typeName = capitalize(name);
 	phonyTypes.push(
 		buildTypeDef(
 			"type",
 			typeName,
-			Object.entries(value).map(
+			Object.entries(content).map(
 				([key, value]) =>
 					`${key}: ${
 						pluralize.isPlural(key)
 							? `[${buildTypes(value, key, phonyTypes)}]`
 							: buildTypes(value, key, phonyTypes)
-					}!`
+					}${withRequired(POTENTIALLY_REQUIRED.includes(key) || isRelative(key))}`
 			)
 		)
 	);
@@ -123,7 +123,7 @@ export function buildTypeDefs(json: Database) {
 		const getAll = `${names.getAll}(pagination: Pagination): [${type}]`;
 		const getById = `${names.getById}(id: ID!): ${type}`;
 		const meta = `${names.meta}: MetaData`;
-		return `${current}\n  ${getAll}\n  ${getById}\n  ${meta}`;
+		return `${current}${NL__}${getAll}${NL__}${getById}${NL__}${meta}`;
 	}, "");
 	const mutDefs = Object.entries(json).reduce((current, [key]) => {
 		const collection = json[key];

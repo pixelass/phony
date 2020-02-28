@@ -1,5 +1,3 @@
-import {SortOrder} from "@phony/utils";
-
 export interface DatabaseEntry {
 	[key: string]: any;
 }
@@ -24,10 +22,11 @@ export interface Root {
 }
 
 export type SortField = string;
+export type SortOrder = "asc"|"desc";
 
 export interface Sorting {
 	field: SortField
-	order: SortOrder
+	order: SortOrder;
 }
 
 export interface Pagination {

@@ -18,8 +18,8 @@ export {
 } from "is-what";
 import pluralize from "pluralize";
 import { ID, ID_SUFFIX, NL, NL__, __ } from "./constants";
-import { SortOrder } from "./types";
-export { ID, ID_SUFFIX, NL, NL__, __, SortOrder };
+import {Pagination, Sorting} from "./types";
+export { ID, ID_SUFFIX, NL, NL__, __ };
 
 const { writeFile: writeFileP } = pify(fs);
 
@@ -85,23 +85,23 @@ export function prettyJSON(data, space = 4) {
 export function sortByField(field) {
 	return (a, b) => {
 		if (a[field] < b[field]) {
-			return 1;
-		} else if (a[field] > b[field]) {
 			return -1;
+		} else if (a[field] > b[field]) {
+			return 1;
 		} else {
 			return 0;
 		}
 	};
 }
 
-export function withSorting(collection, sorting) {
+export function withSorting(collection: Array<{[key: string]: any}>, sorting: Sorting) {
 	const sortedByField = collection.sort(sortByField(sorting.field));
-	if (sorting.order !== SortOrder.desc) {
+	if (sorting.order === "desc") {
 		return sortedByField.reverse();
 	}
 	return sortedByField;
 }
 
-export function getPage(collection, { page = 0, pageSize = 10 }) {
+export function getPage(collection: Array<{[key: string]: any}>, { page = 0, pageSize = 10 }: Pagination) {
 	return chunk(collection, pageSize)[page];
 }
