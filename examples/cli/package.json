@@ -11,7 +11,7 @@
     "url": "https://pixelass.com"
   },
   "scripts": {
-    "start": "phonyql -i",
+    "start": "phonyql -f",
     "export": "phonyql users.js -es users/schema.graphql"
   },
   "devDependencies": {
