@@ -7,24 +7,28 @@ description: "Phony builds a schema from your data"
 
 The first entry needs to have all properties defined while the second one only
 needs the required properties. Phony looks up the first entry and uses it to
-build the type.
+build the type. If it does not appear in the second entry it is treated as
+optional.
+
+### Database setup
 
 ```js
 module.exports = {
 	users: [
 		{
-			name: "John Doe",
 			id: 123
+			name: "John Doe",
+			email: "john@doe.com"
 		},
 		{
-			name: "Jane Doe",
 			id: 456
+			name: "Jane Doe",
 		}
 	]
 };
 ```
 
-will expose the following schema
+### Exposed schema
 
 ```graphql
 type Query {
@@ -60,16 +64,19 @@ type MetaData {
 }
 
 type User {
-	name: String!
 	id: ID!
+	name: String!
+	email: String
 }
 
 input UserInput {
 	name: String!
+	email: String
 }
 
 input UserUpdateInput {
 	name: String
+	email: String
 }
 ```
 
@@ -84,15 +91,16 @@ up by the query. If you don't need them they will simply be ignored.
 module.exports = {
 	users: [
 		{
-			name: "John Doe",
 			id: 123,
-			created: new Date("2020-01-01"),
-			updated: new Date("2020-02-01")
+			name: "John Doe",
+			email: "john@doe.com",
+			created: new Date(),
+			updated: new Date()
 		},
 		{
-			name: "Jane Doe",
 			id: 456,
-			created: new Date("2020-02-11")
+			name: "Jane Doe",
+			created: new Date()
 		}
 	]
 };
@@ -104,14 +112,15 @@ module.exports = {
 type User {
 	name: String!
 	id: ID!
+	email: String
 	created: String!
-	updated: String!
+	updated: String
 }
 ```
 
 ## Relationships
 
-You can link items from different collections.
+Items from different collections can be linked with the `_id` suffix.
 
 ### Example Data
 
@@ -207,4 +216,24 @@ module.exports = {
 }
 ```
 
+## Special prop names
 
+Phony has a few restrictions when naming properties in your entries.
+
+Phony looks for special names to determine if a property is required or how the
+type should be defined.
+
+* `[name]_count`: defines is a counter and should not be updated via user
+  mutations.
+  * Example `view_count` can be read but not written (will not appear in `[name]UpdateInput` or `[name]Input`)
+  * If you need a writable counter use something singular e.g. `stock: 10`
+    instead of `item_count: 10`.
+* `[name]_id`: defines a relation. This value will be used to build relations
+* `__first` + `__second`: these terms are used internally to determine if a
+  field is required.
+* `created`: defines the creation date of the entry. If you need access please
+  list it in the first entry of your collection. Phony will write this property
+  when new items are added.
+* `updated`: defines the update date of the entry. If you need access please
+  list it in the first entry of your collection. Phony will write this property
+  when items are updated.
