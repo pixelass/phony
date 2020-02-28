@@ -26,7 +26,8 @@
     "develop": "yarn lerna run docs:develop --stream",
     "deploy": "rm -rf node_modules/gh-pages/.cache && lerna run docs:build --stream && gh-pages -d 'web/docs/public'",
     "ncu": "npx npm-check-updates -u; yarn lerna exec 'npx npm-check-updates -u'",
-    "ocd": "npx sort-package-json; lerna exec npx sort-package-json"
+    "ocd": "npx sort-package-json; lerna exec npx sort-package-json",
+    "test": "echo 'no tests'; exit 0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

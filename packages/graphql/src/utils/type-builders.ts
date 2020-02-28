@@ -12,9 +12,10 @@ import {
 	isRelative,
 	withRequired,
 	isArray,
-	arrToIndentString, NL__
+	arrToIndentString,
+	NL__
 } from "@phony/utils";
-import {META_DATA_TYPE, PAGINATION_TYPE, POTENTIALLY_REQUIRED, TYPES} from "../constants";
+import { META_DATA_TYPE, PAGINATION_TYPE, TYPES } from "../constants";
 import { Database } from "./types";
 import { getNames } from "./names";
 import omit from "lodash.omit";
@@ -24,7 +25,11 @@ export function buildTypeDef(type: string, name: string, defs: string[]) {
 	return `${type} ${name} ${embrace(arrToIndentString(defs))}`;
 }
 
-export function buildPhonyType({__first, __second, ...content}: {[key: string]: any}, name: string, phonyTypes: string[]) {
+export function buildPhonyType(
+	{ __first, __second, ...content }: { [key: string]: any },
+	name: string,
+	phonyTypes: string[]
+) {
 	const typeName = capitalize(name);
 	const data = __first && __second ? __first : content;
 	phonyTypes.push(
@@ -44,7 +49,11 @@ export function buildPhonyType({__first, __second, ...content}: {[key: string]: 
 	return typeName;
 }
 
-export function buildPhonyInput({__first, __second, ...content}: any, name: string, phonyTypes: string[]) {
+export function buildPhonyInput(
+	{ __first, __second, ...content }: any,
+	name: string,
+	phonyTypes: string[]
+) {
 	const typeName = pluralize.singular(capitalize(name));
 	const data = __first && __second ? __first : content;
 	phonyTypes.push(
@@ -53,9 +62,10 @@ export function buildPhonyInput({__first, __second, ...content}: any, name: stri
 			`${typeName}Input`,
 			Object.entries(data).map(
 				([key, value]) =>
-					`${key}: ${
-						buildTypes(value, key, phonyTypes, buildPhonyInput)
-					}${withRequired(withRequired(__second && Object.keys(__second).includes(key)) || isRelative(key))}`
+					`${key}: ${buildTypes(value, key, phonyTypes, buildPhonyInput)}${withRequired(
+						withRequired(__second && Object.keys(__second).includes(key)) ||
+							isRelative(key)
+					)}`
 			)
 		)
 	);
@@ -70,9 +80,12 @@ export function buildPhonyUpdateInput(content: any, name: string, phonyTypes: st
 			`${typeName}UpdateInput`,
 			Object.entries(content).map(
 				([key, value]) =>
-					`${key}: ${
-						buildTypes(value, key, phonyTypes, buildPhonyUpdateInput)
-					}${withRequired(isId(key))}`
+					`${key}: ${buildTypes(
+						value,
+						key,
+						phonyTypes,
+						buildPhonyUpdateInput
+					)}${withRequired(isId(key))}`
 			)
 		)
 	);
@@ -106,7 +119,11 @@ export function buildTypes(
 	if (isArray(value)) {
 		const [first, second] = value as any[];
 		if (isObject(first) && isObject(second)) {
-			return buildTypes({__first: first, __second: second}, pluralize.singular(key), phonyTypes);
+			return buildTypes(
+				{ __first: first, __second: second },
+				pluralize.singular(key),
+				phonyTypes
+			);
 		}
 		return buildTypes(first, pluralize.singular(key), phonyTypes);
 	}
@@ -144,7 +161,7 @@ export function buildTypeDefs(json: Database) {
 				Boolean
 			)
 		);
-		buildTypes({__first: initialProps, __second: second}, key, phonyInputs, buildPhonyInput);
+		buildTypes({ __first: initialProps, __second: second }, key, phonyInputs, buildPhonyInput);
 		buildTypes(initialUpdateProps, key, phonyInputs, buildPhonyUpdateInput);
 		const type = buildTypes(first, key, []);
 		const singularType = pluralize.singular(type);
@@ -155,5 +172,12 @@ export function buildTypeDefs(json: Database) {
 	}, "");
 	const query = `type Query {${queryDefs}\n}`;
 	const mut = `type Mutation {${mutDefs}\n}`;
-	return [query, mut, PAGINATION_TYPE, META_DATA_TYPE, ...uniq(phonyTypes), ...uniq(phonyInputs)].join("\n\n");
+	return [
+		query,
+		mut,
+		PAGINATION_TYPE,
+		META_DATA_TYPE,
+		...uniq(phonyTypes),
+		...uniq(phonyInputs)
+	].join("\n\n");
 }

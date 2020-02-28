@@ -10,19 +10,6 @@ export const TYPES = {
 	float: "Float"
 };
 
-export const POTENTIALLY_REQUIRED = [
-	"id",
-	"title",
-	"name",
-	"body",
-	"content",
-	"email",
-	"mobile",
-	"telephone",
-	"phone",
-	"tel"
-];
-
 export const ID_SUFFIX_PATTERN = new RegExp(`${ID_SUFFIX}$`);
 
 export const META_DATA_TYPE = `type MetaData {
