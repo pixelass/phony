@@ -17,6 +17,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build --stream",
     "clean:package-json": "npx sort-package-json package.json 'packages/*/package.json'",
+    "examples:apollo": "lerna run dev --scope @examples/apollo --stream",
     "examples:cli": "lerna run start --scope @examples/cli --stream",
     "cli:help": "lerna exec 'yarn phony --help' --scope @examples/cli --stream",
     "examples:graphql": "lerna run start --scope @examples/graphql --stream",
