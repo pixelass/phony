@@ -24,37 +24,36 @@ export function buildTypeDef(type: string, name: string, defs: string[]) {
 	return `${type} ${name} ${embrace(arrToIndentString(defs))}`;
 }
 
-export function buildPhonyType(content: {[key: string]: any}, name: string, phonyTypes: string[]) {
+export function buildPhonyType({__first, __second, ...content}: {[key: string]: any}, name: string, phonyTypes: string[]) {
 	const typeName = capitalize(name);
+	const data = __first && __second ? __first : content;
 	phonyTypes.push(
 		buildTypeDef(
 			"type",
 			typeName,
-			Object.entries(content).map(
+			Object.entries(data).map(
 				([key, value]) =>
 					`${key}: ${
 						pluralize.isPlural(key)
 							? `[${buildTypes(value, key, phonyTypes)}]`
 							: buildTypes(value, key, phonyTypes)
-					}${withRequired(POTENTIALLY_REQUIRED.includes(key) || isRelative(key))}`
+					}${withRequired(__second && Object.keys(__second).includes(key))}`
 			)
 		)
 	);
 	return typeName;
 }
 
-export function buildPhonyInput(value: any, name: string, phonyTypes: string[]) {
+export function buildPhonyInput(content: any, name: string, phonyTypes: string[]) {
 	const typeName = pluralize.singular(capitalize(name));
 	phonyTypes.push(
 		buildTypeDef(
 			"input",
 			`${typeName}Input`,
-			Object.entries(value).map(
+			Object.entries(content).filter(([key]) => key.endsWith("_count")).map(
 				([key, value]) =>
 					`${key}: ${
-						pluralize.isPlural(key)
-							? `[${buildTypes(value, key, phonyTypes, buildPhonyInput)}]`
-							: buildTypes(value, key, phonyTypes, buildPhonyInput)
+							buildTypes(value, key, phonyTypes, buildPhonyInput)
 					}${withRequired(POTENTIALLY_REQUIRED.includes(key) || isRelative(key))}`
 			)
 		)
@@ -62,18 +61,16 @@ export function buildPhonyInput(value: any, name: string, phonyTypes: string[]) 
 	return typeName;
 }
 
-export function buildPhonyUpdateInput(value: any, name: string, phonyTypes: string[]) {
+export function buildPhonyUpdateInput(content: any, name: string, phonyTypes: string[]) {
 	const typeName = pluralize.singular(capitalize(name));
 	phonyTypes.push(
 		buildTypeDef(
 			"input",
 			`${typeName}UpdateInput`,
-			Object.entries(value).map(
+			Object.entries(content).filter(([key]) => key.endsWith("_count")).map(
 				([key, value]) =>
 					`${key}: ${
-						pluralize.isPlural(key)
-							? `[${buildTypes(value, key, phonyTypes, buildPhonyUpdateInput)}]`
-							: buildTypes(value, key, phonyTypes, buildPhonyUpdateInput)
+						buildTypes(value, key, phonyTypes, buildPhonyUpdateInput)
 					}${withRequired(isId(key))}`
 			)
 		)
@@ -106,7 +103,10 @@ export function buildTypes(
 		return isFloat(value as number) ? TYPES.float : TYPES.int;
 	}
 	if (isArray(value)) {
-		const [first] = value as any[];
+		const [first, second] = value as any[];
+		if (isObject(first) && isObject(second)) {
+			return buildTypes({__first: first, __second: second}, pluralize.singular(key), phonyTypes);
+		}
 		return buildTypes(first, pluralize.singular(key), phonyTypes);
 	}
 	if (isObject(value)) {
