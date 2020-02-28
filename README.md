@@ -1,6 +1,6 @@
 # Phony
 
-<p align="center"><img src="https://raw.githubusercontent.com/pixelass/phony/master/resources/logo.jpg" alt="phony logo" width="300"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/pixelass/phony/master/resources/logo.png" alt="phony logo" width="300"/></p>
 Phony is a collection of phony (mock) services.  
 Its main purpose is to provide a mocked graphql service
 
