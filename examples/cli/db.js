@@ -35,6 +35,7 @@ module.exports = {
 		{
 			id: 123,
 			name: "John Doe",
+			age: 29,
 			email: "john@doe.com",
 			company: "Doe Inc.",
 			bio: "Germanus, regius valebats etiam contactus de magnum, raptus burgus.",
@@ -44,6 +45,7 @@ module.exports = {
 		{
 			id: 456,
 			name: "Jane Doe",
+			age: 55,
 			created: new Date("2015-10-12")
 		}
 	],

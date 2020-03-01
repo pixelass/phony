@@ -9,7 +9,6 @@ export interface Sorting {
 export interface Pagination {
 	page: number;
 	pageSize: number;
-	sorting: Sorting
 }
 
 export interface Entry {

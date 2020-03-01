@@ -19,10 +19,9 @@ ${__}count: Int!
 export const PAGINATION_TYPE = `input Pagination {
 ${__}page: Int
 ${__}pageSize: Int
-${__}sorting: Sorting
-}
+}`;
 
-input Sorting {
+export const SORTING_TYPE = `input Sorting {
 ${__}field: String!
 ${__}order: SortOrder!
 }
@@ -32,11 +31,5 @@ ${__}asc
 ${__}desc
 }`;
 
-export const FILTER_TYPE = `
-input Filter {
-${__}fields: Fields
-${__}q: String
-}
-`
 
 export const CWD = process.cwd();

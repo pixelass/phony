@@ -18,7 +18,7 @@ export {
 } from "is-what";
 import pluralize from "pluralize";
 import { ID, ID_SUFFIX, NL, NL__, __ } from "./constants";
-import { Collection, Filter, Pagination, Sorting } from "./types";
+import {Collection, Filter, Pagination, PaginationWithSorting, Sorting} from "./types";
 export { ID, ID_SUFFIX, NL, NL__, __ };
 
 const { writeFile: writeFileP } = pify(fs);
@@ -94,7 +94,10 @@ export function sortByField(field) {
 	};
 }
 
-export function withSorting(collection: Collection, sorting: Sorting) {
+export function withSorting(collection: Collection, sorting?: Sorting) {
+	if (!sorting) {
+		return collection;
+	}
 	const sortedByField = collection.sort(sortByField(sorting.field));
 	if (sorting.order === "desc") {
 		return sortedByField.reverse();
@@ -102,8 +105,11 @@ export function withSorting(collection: Collection, sorting: Sorting) {
 	return sortedByField;
 }
 
-export function getPage(collection: Collection, { page = 0, pageSize = 10 }: Partial<Pagination>) {
-	return chunk(collection, pageSize)[page];
+export function getPage(collection: Collection, pagination?: Pagination) {
+	if (!pagination) {
+		return collection;
+	}
+	return chunk(collection, pagination.pageSize)[pagination.page];
 }
 
 export function hasMatch(a: number | string, b: string) {
@@ -132,21 +138,22 @@ export function withFilter(collection: Collection, filter?: Filter) {
 	}
 	const { fields, q } = filter;
 	return collection.filter(item => {
-		const nFields = fields ? Object.keys(fields).length : 0;
 		const { length } = Object.entries(item).filter(([key, value]) => {
-			const [first] = Object.keys(fields).map(field => {
-				const pattern = new RegExp(`(${key})_([lg]te?)`);
-				return field.match(pattern)
-			}).filter(Boolean);
-			if (first) {
-				const [fieldKey, originalKey, cond] = first;
-				return compare(parseInt(`${value}`), parseInt(fields[fieldKey]), cond)
+			if (fields) {
+				const [first] = Object.keys(fields).map(field => {
+					const pattern = new RegExp(`(${key})_([lg]te?)`);
+					return field.match(pattern)
+				}).filter(Boolean);
+				if (first) {
+					const [fieldKey, originalKey, cond] = first;
+					return compare(parseInt(`${value}`), parseInt(fields[fieldKey]), cond)
+				}
+				if (key in fields) {
+					return hasMatch(value, fields[key]);
+				}
 			}
-			if (!!fields && key in fields) {
-				return hasMatch(value, fields[key]);
-			}
-			return !fields && hasMatch(value, q);
+			return !!q && hasMatch(value, q);
 		});
-		return !!length && (!fields || length === nFields);
+		return !!length && (!fields || length === Object.keys(fields).length);
 	});
 }

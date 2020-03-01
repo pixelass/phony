@@ -15,22 +15,21 @@ export interface Names {
 	del: string;
 }
 
-export type RootFunction = (...args: any[]) => any
+export type RootFunction = (...args: any[]) => any;
 
 export interface Root {
-	[key: string]: RootFunction
+	[key: string]: RootFunction;
 }
 
 export type SortField = string;
-export type SortOrder = "asc"|"desc";
+export type SortOrder = "asc" | "desc";
 
 export interface Sorting {
-	field: SortField
+	field: SortField;
 	order: SortOrder;
 }
 
 export interface Pagination {
 	page: number;
 	pageSize: number;
-	sorting: Sorting
 }

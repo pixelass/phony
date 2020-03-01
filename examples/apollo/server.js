@@ -16,5 +16,5 @@ const handler = (req, res) => handle(req, res);
 	server.use(nextI18NextMiddleware(nextI18next));
 	server.get("*", handler);
 	await server.listen(port);
-	console.log(`> Client ready on http://localhost:${port}`); // eslint-disable-line no-console
+	console.log(`Client ready on http://localhost:${port}`); // eslint-disable-line no-console
 })();

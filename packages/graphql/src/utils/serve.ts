@@ -20,6 +20,6 @@ export default async function serve({schema, rootValue}, port: string | number =
 		})
 	);
 	await app.listen(port);
-	console.log(`> Client ready on http://localhost:${port}`); // eslint-disable-line no-console
+	console.log(`Client ready on http://localhost:${port}`); // eslint-disable-line no-console
 	return true;
 }

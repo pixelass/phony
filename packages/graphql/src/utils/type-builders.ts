@@ -15,7 +15,7 @@ import {
 	arrToIndentString,
 	NL__
 } from "@phony/utils";
-import { META_DATA_TYPE, PAGINATION_TYPE, TYPES } from "../constants";
+import {META_DATA_TYPE, PAGINATION_TYPE, SORTING_TYPE, TYPES} from "../constants";
 import { Database } from "./types";
 import { getNames } from "./names";
 import omit from "lodash.omit";
@@ -154,7 +154,7 @@ function buildFilterFields(key, fields, phonyInputs = []) {
 				return [`${name}: Int`,...["gt", "gte", "lte", "lt"].map(suffix =>
 					`${name}_${suffix}: Int`)].join(NL__)
 			}
-			return `${name}: String`
+			return `${name}: ${isId(name) ? "ID" : "String"}`
 		})
 	);
 	phonyInputs.push(typeDef);
@@ -173,7 +173,7 @@ export function buildTypeDefs(json: Database) {
 				isCapitalized(x) || isRelative(x)
 		);
 		const filter = buildFilter(key, omit(first, removals), phonyInputs);
-		const getAll = `${names.getAll}(pagination: Pagination, filter: ${filter}): [${type}]`;
+		const getAll = `${names.getAll}(pagination: Pagination, sorting: Sorting, filter: ${filter}): [${type}]`;
 		const getById = `${names.getById}(id: ID!): ${type}`;
 		const meta = `${names.meta}: MetaData`;
 		return [...current, getAll, getById, meta];
@@ -209,6 +209,7 @@ export function buildTypeDefs(json: Database) {
 	return [
 		query,
 		mut,
+		SORTING_TYPE,
 		PAGINATION_TYPE,
 		META_DATA_TYPE,
 		...uniq(phonyTypes),
