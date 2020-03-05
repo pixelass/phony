@@ -1,8 +1,8 @@
 export type SortField = string;
-export type SortOrder = "asc"|"desc";
+export type SortOrder = "asc" | "desc";
 
 export interface Sorting {
-	field: SortField
+	field: SortField;
 	order: SortOrder;
 }
 
@@ -12,16 +12,22 @@ export interface Pagination {
 }
 
 export interface Entry {
-	[key: string]: string | number
+	[key: string]: string | number;
 }
 
-export type Collection = Entry[]
+export interface Item extends Entry {
+	id: string;
+}
+
+export type Collection = Item[];
 
 export interface Fields {
-	[key: string]: string
+	[key: string]: string;
 }
 
 export interface Filter {
 	fields?: Fields;
 	q?: string;
 }
+
+export type ItemComparison = (item: Item) => boolean;

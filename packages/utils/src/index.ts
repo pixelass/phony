@@ -1,6 +1,6 @@
 import chunk from "lodash.chunk";
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import pify from "pify";
 import mkdirp from "mkdirp";
 export {
@@ -18,27 +18,41 @@ export {
 } from "is-what";
 import pluralize from "pluralize";
 import { ID, ID_SUFFIX, NL, NL__, __ } from "./constants";
-import {Collection, Filter, Pagination, PaginationWithSorting, Sorting} from "./types";
+import { Collection, Filter, Item, ItemComparison, Pagination, Sorting } from "./types";
 export { ID, ID_SUFFIX, NL, NL__, __ };
 
-const { writeFile: writeFileP } = pify(fs);
+const { readFile: readFileP, writeFile: writeFileP } = pify(fs);
 
-export function writeFile(p: string, c: string) {
-	const { dir } = path.parse(p);
-	return mkdirp(dir)
-		.then(() => writeFileP(p, c))
-		.catch(error => {
-			console.error(error);
-		});
+export function writeFile(filePath: string, content: string): Promise<boolean> {
+	const { dir } = path.parse(filePath);
+	return new Promise((resolve, reject) => {
+		mkdirp(dir)
+			.then(() => {
+				writeFileP(filePath, content)
+					.then(() => resolve(true))
+					.catch(error => {
+						console.error(error);
+						reject(error);
+					});
+			})
+			.catch(error => {
+				console.error(error);
+				reject(error);
+			});
+	});
+}
+
+export function readFile(filePath: string): Promise<string> {
+	return readFileP(filePath, "utf-8");
 }
 
 export { pluralize };
 
-export function isRelated(id: number | string, name: string) {
+export function isRelated(id: number | string, name: string): ItemComparison {
 	return item => `${item[name]}` === `${id}`;
 }
 
-export function isSame(id) {
+export function isSame(id: string): ItemComparison {
 	return isRelated(id, "id");
 }
 
@@ -50,27 +64,27 @@ export function isInteger(n: number): boolean {
 	return n === +n && n === (n | 0);
 }
 
-export function isId(str) {
+export function isId(str: string): boolean {
 	return str === ID;
 }
 
-export function isRelative(str) {
+export function isRelative(str: string): boolean {
 	return str.endsWith(ID_SUFFIX);
 }
 
-export function isCapitalized(str) {
+export function isCapitalized(str: string): boolean {
 	return str[0] === str[0].toUpperCase();
 }
 
-export function withRequired(condition) {
+export function withRequired(condition: boolean): string {
 	return condition ? "!" : "";
 }
 
-export function capitalize(str: string) {
+export function capitalize(str: string): string {
 	return `${str[0].toUpperCase()}${str.slice(1)}`;
 }
 
-export function embrace(str) {
+export function embrace(str: string): string {
 	return `{${NL__}${str}${NL}}`;
 }
 
@@ -82,8 +96,8 @@ export function prettyJSON(data, space = 4) {
 	return JSON.stringify(data, null, space);
 }
 
-export function sortByField(field) {
-	return (a, b) => {
+export function sortByField(field: string) {
+	return (a: Item, b: Item) => {
 		if (a[field] < b[field]) {
 			return -1;
 		} else if (a[field] > b[field]) {
@@ -117,7 +131,7 @@ export function hasMatch(a: number | string, b: string) {
 }
 
 export function compare(a: number, b: number, c: string) {
-	switch(c) {
+	switch (c) {
 		case "gt":
 			return a > b;
 		case "gte":
@@ -126,11 +140,10 @@ export function compare(a: number, b: number, c: string) {
 			return a <= b;
 		case "lt":
 			return a < b;
-		default :
+		default:
 			return false;
 	}
 }
-
 
 export function withFilter(collection: Collection, filter?: Filter) {
 	if (!filter) {
@@ -140,13 +153,15 @@ export function withFilter(collection: Collection, filter?: Filter) {
 	return collection.filter(item => {
 		const { length } = Object.entries(item).filter(([key, value]) => {
 			if (fields) {
-				const [first] = Object.keys(fields).map(field => {
-					const pattern = new RegExp(`(${key})_([lg]te?)`);
-					return field.match(pattern)
-				}).filter(Boolean);
+				const [first] = Object.keys(fields)
+					.map(field => {
+						const pattern = new RegExp(`(${key})_([lg]te?)`);
+						return field.match(pattern);
+					})
+					.filter(Boolean);
 				if (first) {
 					const [fieldKey, originalKey, cond] = first;
-					return compare(parseInt(`${value}`), parseInt(fields[fieldKey]), cond)
+					return compare(parseInt(`${value}`), parseInt(fields[fieldKey]), cond);
 				}
 				if (key in fields) {
 					return hasMatch(value, fields[key]);

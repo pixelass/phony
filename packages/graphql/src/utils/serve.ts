@@ -1,7 +1,15 @@
 import createServer from "@phony/server";
 import graphqlHTTP from "express-graphql";
+import { GraphQLSchema } from "graphql";
 
-export default async function serve({schema, rootValue}, port: string | number = 1337): Promise<boolean> {
+interface ServeOptions {
+	schema: GraphQLSchema;
+	rootValue: unknown;
+}
+export default async function serve(
+	{ schema, rootValue }: ServeOptions,
+	port: string | number = 1337
+): Promise<boolean> {
 	const app = createServer();
 	app.get(
 		"*",

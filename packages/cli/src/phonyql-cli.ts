@@ -9,24 +9,23 @@ Usage
   $ phonyql <input> [...flags]
 
 Options
-  --export, -e    schema will be exported when true
-  --schema, -s    schema will be exported to this path
-  --database, -d  database will be generated or read from to this path
-  --no-serve, -n  don't serve
-  --flush, -f     resets the local database (removes all additions, updates and deletions)
-  --init, -i      initializes the local database (only if it doesn't exist, does not flush)
-  --port, -p      port for graphql service
+  --export, -e      schema will be exported when true
+  --schema, -s      schema will be exported to this path
+  --database, -d    database will be generated or read from to this path
+  --no-serve, -n    don't serve
+  --flush, -f       resets the local database (removes all additions, updates and deletions)
+  --init, -i        initializes the local database (only if it doesn't exist, does not flush)
+  --port, -p        port for graphql service
 
 Examples
 $ phonyql -i
-$ phonyql my-database.js -s my-schema.grahphl -e
+$ phonyql my-database.js -es my-schema.grahphl
 `,
 	{
 		flags: {
 			schema: {
 				type: "string",
-				alias: "s",
-				default: "schema.graphql"
+				alias: "s"
 			},
 			"no-serve": {
 				type: "boolean",
@@ -34,13 +33,11 @@ $ phonyql my-database.js -s my-schema.grahphl -e
 			},
 			port: {
 				type: "string",
-				alias: "p",
-				default: "1337"
+				alias: "p"
 			},
 			database: {
 				type: "string",
-				alias: "d",
-				default: "db.json"
+				alias: "d"
 			},
 			flush: {
 				type: "boolean",

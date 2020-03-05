@@ -1,35 +1,69 @@
-export interface DatabaseEntry {
-	[key: string]: any;
-}
-
-export interface Database {
-	[key: string]: DatabaseEntry[];
-}
-
-export interface Names {
-	getAll: string;
-	getById: string;
-	meta: string;
-	create: string;
-	update: string;
-	del: string;
-}
-
 export type RootFunction = (...args: any[]) => any;
 
 export interface Root {
 	[key: string]: RootFunction;
 }
 
-export type SortField = string;
-export type SortOrder = "asc" | "desc";
-
-export interface Sorting {
-	field: SortField;
-	order: SortOrder;
+export interface DatabaseEntry {
+	id: string;
+	[key: string]: any;
 }
 
-export interface Pagination {
-	page: number;
-	pageSize: number;
+export interface Entry {
+	[key: string]: any;
+}
+export interface Database {
+	[key: string]: DatabaseEntry[];
+}
+
+export interface NameConfig {
+	get: {
+		all: string;
+		byId: string;
+		meta: string;
+	};
+	post: {
+		create: string;
+		update: string;
+		delete: string;
+	};
+	input: {
+		filter: string;
+		create: string;
+		update: string;
+	};
+}
+
+export interface NameMap {
+	[key: string]: NameConfig;
+}
+
+export interface PonyConfig {
+	queryConfig: {
+		get: {
+			byId: string;
+			all: string;
+			meta: string;
+		};
+		post: {
+			create: string;
+			update: string;
+			delete: string;
+		};
+		input: {
+			filter: string;
+			filterFields: string;
+			create: string;
+			update: string;
+		};
+		internalFields: {
+			created: string;
+			updated: string;
+			views: string;
+		};
+	};
+	schema: string;
+	input: string;
+	database: string;
+	port: string | number;
 }

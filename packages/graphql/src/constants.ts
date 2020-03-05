@@ -1,4 +1,4 @@
-import {__, ID_SUFFIX} from "@phony/utils";
+import { __, ID_SUFFIX } from "@phony/utils";
 
 export const TYPES = {
 	id: "ID",
@@ -30,6 +30,5 @@ enum SortOrder {
 ${__}asc
 ${__}desc
 }`;
-
 
 export const CWD = process.cwd();
