@@ -1,0 +1,90 @@
+---
+title: 'Config'
+description: 'Detailed config examples for @phony/cli'
+---
+
+```ts
+interface PonyConfig {
+	queryConfig?: {
+		get: {
+			byId: string;
+			all: string;
+			meta: string;
+		};
+		post: {
+			create: string;
+			update: string;
+			delete: string;
+		};
+		input: {
+			filter: string;
+			filterFields: string;
+			create: string;
+			update: string;
+		};
+		internalFields: {
+			created: string;
+			updated: string;
+			views: string;
+		};
+	};
+	schema?: string;
+	input?: string;
+	database?: string;
+	port?: string | number;
+}
+```
+
+## Query Config
+
+the `queryConfig` allows you to define names for your query types and inputs.
+The word `name` is used in different variations as a placeholder.
+
+for "users":
+
+* `hello [name]!` => hello user!
+* `hello [Name]!` => hello User!
+* `hello [users]!` => hello users!
+* `hello [Users]!` => hello Users!
+
+If you expect `getUserById` for the `get.byId` method you can write: `get[Name]ById`.
+
+### Internal Fields
+
+Phony writes two properties (updated, created) which can be defined vie the
+`internalFields` property of the `queryConfig` object.
+To change the names, simply define them in your config.
+
+```
+{
+	created: "createdAt",
+	updated: "lastUpdate"
+}
+```
+
+You can also add fields from your data that should not appear in the update
+input. This can be helpful if you want to prevent certain fields from being
+updated.
+
+{
+	views: "views",
+	upvotes: "likes",
+	downvotes: "dislikes",
+	secret: "neverAllowChangingMe"
+}
+
+## Input
+
+This file is the input of your database.
+
+## Database
+
+This file is the output of your database.
+
+## Schema
+
+This file is the output of the schema when exported.
+
+## Port
+
+The port on which graphql should run.

@@ -5,10 +5,18 @@ description: "Phony builds a schema from your data"
 
 ## Data model
 
-The first entry needs to have all properties defined while the second one only
-needs the required properties. Phony looks up the first entry and uses it to
-build the type. If it does not appear in the second entry it is treated as
-optional.
+Phony builds the graphql query from your data. There are a few requirements to
+ensure phony can do its magic without problems.
+
+The database should be an object with collections, where each collection is an
+array of objects. It is advised to keep these objects flat but phony will build
+types for nested objects to allow a full specification.
+
+### Collections
+The first entry needs to have all properties defined.
+the second entry only needs the required properties.
+Phony looks up the first entry and uses it to build the type. If it does not
+appear in the second entry it is treated as an optional property.
 
 ### Database setup
 
@@ -18,7 +26,7 @@ module.exports = {
 		{
 			id: 123
 			name: "John Doe",
-			email: "john@doe.com"
+			email: "john@doe.com" // optional
 		},
 		{
 			id: 456
@@ -82,7 +90,7 @@ input UserUpdateInput {
 
 ## Phony generated dates
 
-Phony uses the `created` and `updated` properties of entries. These are added
+Phony uses the `created` and `updated` properties (names configurable)  of entries. These are added
 when mutations write to the local database.
 If you want to use them you should add them to your data so they will be picked
 up by the query. If you don't need them they will simply be ignored.
@@ -223,17 +231,12 @@ Phony has a few restrictions when naming properties in your entries.
 Phony looks for special names to determine if a property is required or how the
 type should be defined.
 
-* `[name]_count`: defines is a counter and should not be updated via user
-  mutations.
-  * Example `view_count` can be read but not written (will not appear in `[name]UpdateInput` or `[name]Input`)
-  * If you need a writable counter use something singular e.g. `stock: 10`
-    instead of `item_count: 10`.
 * `[name]_id`: defines a relation. This value will be used to build relations
 * `__first` + `__second`: these terms are used internally to determine if a
-  field is required.
+  field is required, "DON'T USE THEM in your database".
 * `created`: defines the creation date of the entry. If you need access please
   list it in the first entry of your collection. Phony will write this property
-  when new items are added.
+  when new items are added. (name configurable)
 * `updated`: defines the update date of the entry. If you need access please
   list it in the first entry of your collection. Phony will write this property
-  when items are updated.
+  when items are updated. (name configurable)
