@@ -1,7 +1,7 @@
 import meow from "meow";
 
 export const {
-	input: [filePath = "db.js"],
+	input: [filePath],
 	flags
 } = meow(
 	`

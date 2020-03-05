@@ -52,21 +52,29 @@ const defaultConfig = {
 async function phonyql(filePath: string, flags: AnyFlags): Promise<boolean> {
 	const cwd = process.cwd();
 	const { port, database, schema } = flags;
-	const { config = {}, isEmpty } = await explorer();
+	const { config = {}} = await explorer();
 	const mergedConfig = merge(defaultConfig, config, { port, database, schema });
-	const resolvedPath = path.resolve(cwd, filePath);
+	const actualFilePath = filePath || config.input;
+	if (!actualFilePath) {
+		console.error(`no input file available, expected string, got ${actualFilePath}`);
+	}
+	const resolvedPath = path.resolve(cwd, actualFilePath);
 	const shouldServe = !flags["no-serve"];
 	const shouldFlush = !!flags.flush;
 	const shouldInit = !!flags.init;
 	const shouldExport = !!flags.export;
 	const databasePath = path.resolve(cwd, mergedConfig.database as string);
+	if (!existsSync(resolvedPath)) {
+		console.error(`File ${resolvedPath} does not exist.`);
+	}
+	const db = require(resolvedPath);
+	if (shouldExport) {
+		return await exportSchema(db, mergedConfig);
+	}
 	if (shouldInit || shouldFlush) {
 		if (!existsSync(databasePath) || shouldFlush) {
-			await flush(require(resolvedPath), mergedConfig);
+			await flush(db, mergedConfig);
 		}
-	}
-	if (shouldExport) {
-		return await exportSchema(require(resolvedPath), mergedConfig);
 	}
 	if (shouldServe) {
 		if (!existsSync(databasePath)) {
@@ -77,7 +85,7 @@ async function phonyql(filePath: string, flags: AnyFlags): Promise<boolean> {
 			);
 			return false;
 		}
-		return await phonyGraphql(require(databasePath), mergedConfig);
+		return await phonyGraphql(db, mergedConfig);
 	}
 }
 
