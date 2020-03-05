@@ -3,7 +3,7 @@ module.exports = {
 		{
 			id: 1,
 			title: "Lorem Ipsum",
-			view_count: 254,
+			views: 254,
 			user_id: 123,
 			created: new Date("2016-11-15"),
 			updated: new Date("2016-11-16")
@@ -11,14 +11,14 @@ module.exports = {
 		{
 			id: 2,
 			title: "Sic Dolor amet",
-			view_count: 65,
+			views: 65,
 			user_id: 456,
 			created: new Date("2016-09-21")
 		},
 		{
 			id: 3,
 			title: "Ridetis foris ducunt ad nobilis pars",
-			view_count: 198,
+			views: 198,
 			user_id: 456,
 			created: new Date("2016-03-15"),
 			updated: new Date("2016-07-06")
@@ -26,7 +26,7 @@ module.exports = {
 		{
 			id: 4,
 			title: "Calcaria velox resistentia est",
-			view_count: 271,
+			views: 271,
 			user_id: 456,
 			created: new Date("2016-11-02"),
 		}
@@ -53,6 +53,7 @@ module.exports = {
 		{
 			id: 987,
 			post_id: 1,
+			title: "Zelus de rusticus lumen, attrahendam bursa",
 			body: "Consectetur adipiscing elit",
 			created: new Date("2017-02-19"),
 			updated: new Date("2017-02-09")

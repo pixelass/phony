@@ -8,8 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import LanguageIcon from "@material-ui/icons/Language";
 
 const GET_ITEMS = gql`
-	query getItemsWithMeta($pagination: Pagination) {
-		getItems(pagination: $pagination) {
+	query ($pagination: Pagination, $sorting: Sorting, $filter: ItemsFilter) {
+		getItems(pagination: $pagination, sorting: $sorting, filter: $filter) {
 			name
 			id
 			created
@@ -25,7 +25,7 @@ const GET_ITEMS = gql`
 `;
 
 const CREATE_ITEM = gql`
-	mutation createItem($input: ItemInput!) {
+	mutation ($input: ItemInitInput!) {
 		createItem(input: $input) {
 			name
 			description
@@ -34,9 +34,11 @@ const CREATE_ITEM = gql`
 		}
 	}
 `;
+
 const Home = props => {
 	const { t } = useTranslation("translation");
 	// Queries
+	const [q, setQ] = React.useState<string>(undefined);
 	const [newItemName, setNewItemName] = React.useState("");
 	const [newItemPrice, setNewItemPrice] = React.useState("");
 	const [newItemStock, setNewItemStock] = React.useState("");
@@ -46,36 +48,60 @@ const Home = props => {
 	const [currentSortOrder, setCurrentSortOrder] = React.useState("asc");
 	const [currentPagination, setCurrentPagination] = React.useState({
 		page: currentPage,
-		pageSize: currentPageSize,
-		sorting: {
-			field: currentSortField,
-			order: currentSortOrder
-		}
+		pageSize: currentPageSize
 	});
+	const [currentSorting, setCurrentSorting] = React.useState({
+		field: currentSortField,
+		order: currentSortOrder
+	});
+	const [currentFilter, setCurrentFilter] = React.useState(undefined);
+
 	React.useEffect(() => {
 		if (
 			currentPage !== undefined &&
-			currentPageSize !== undefined &&
-			currentSortField !== undefined &&
-			currentSortOrder !== undefined
+			currentPageSize !== undefined
 		) {
-			const newPagination = {
+			setCurrentPagination({
 				page: currentPage,
-				pageSize: currentPageSize,
-				sorting: {
-					field: currentSortField,
-					order: currentSortOrder
-				}
-			};
-			setCurrentPagination(newPagination);
+				pageSize: currentPageSize
+			});
 		} else {
 			setCurrentPagination(undefined);
 		}
-	}, [currentPage, currentPageSize, currentSortField, currentSortOrder, setCurrentPagination]);
+	}, [currentPage, currentPageSize, setCurrentPagination]);
+
+	React.useEffect(() => {
+		if (
+			q !== undefined &&
+			q !== ""
+		) {
+			setCurrentFilter({
+				q
+			});
+		} else {
+			setCurrentFilter(undefined);
+		}
+	}, [q, setCurrentFilter]);
+
+	React.useEffect(() => {
+		if (
+			currentSortField !== undefined &&
+			currentSortOrder !== undefined
+		) {
+			setCurrentSorting({
+				field: currentSortField,
+				order: currentSortOrder
+			});
+		} else {
+			setCurrentSorting(undefined);
+		}
+	}, [currentSortField, currentSortOrder, setCurrentSorting]);
 
 	const { loading, error, data } = useQuery(GET_ITEMS, {
 		variables: {
-			pagination: currentPagination
+			pagination: currentPagination,
+			sorting: currentSorting,
+			filter: currentFilter
 		}
 	});
 	// Mutations
@@ -156,6 +182,9 @@ const Home = props => {
 				isLoading={loading}
 				totalCount={data ? data._getItemsMeta.count : undefined}
 				page={currentPage}
+				onSearchChange={result => {
+					setQ(result);
+				}}
 				onChangePage={nextPage => {
 					setCurrentPage(nextPage);
 				}}

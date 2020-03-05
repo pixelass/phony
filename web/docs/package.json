@@ -12,7 +12,8 @@
     "docs:build": "gatsby build --prefix-paths"
   },
   "dependencies": {
-    "gatsby": "^2.19.22",
+    "@types/react": "^16.9.23",
+    "gatsby": "^2.19.28",
     "gatsby-theme-phony-docs": "1.0.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"

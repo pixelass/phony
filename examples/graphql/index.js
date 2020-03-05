@@ -1,10 +1,9 @@
 const createGraphqlServer = require("@phony/graphql");
 const flush = require("@phony/graphql/flush");
-const path = require("path");
 const db = require("./db");
+const config = require("./phony.config");
 
 (async function start() {
-	const filePath = path.resolve(__dirname, "db.json");
-	await flush(db, filePath);
-	createGraphqlServer(db, filePath);
+	await flush(db, config);
+	createGraphqlServer(db, config);
 })();

@@ -13,7 +13,6 @@ export default function Table({options, columns, data, ...props}) {
 			icons={tableIcons}
 			options={{
 				draggable: false,
-				toolbar: false,
 				emptyRowsWhenPaging: false,
 				...options
 			}}
