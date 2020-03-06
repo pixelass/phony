@@ -27,9 +27,12 @@
     "deploy": "rm -rf node_modules/gh-pages/.cache && lerna run docs:build --stream && gh-pages -d 'web/docs/public'",
     "ncu": "npx npm-check-updates -u; yarn lerna exec 'npx npm-check-updates -u'",
     "ocd": "npx sort-package-json; lerna exec npx sort-package-json",
-    "test": "echo 'no tests'; exit 0"
+    "prewatch": "yarn build",
+    "pretest": "yarn build",
+    "test": "lerna run test --parallel"
   },
   "devDependencies": {
+    "@ava/typescript": "^1.1.1",
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
@@ -38,6 +41,7 @@
     "@types/node": "^13.7.7",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-json": "^4.0.2",
+    "ava": "^3.5.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "gh-pages": "^2.2.0",
     "lerna": "^3.20.2",
