@@ -1,7 +1,7 @@
 {
   "name": "@examples/cli",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "description": "Example for the phony cli",
   "repository": "git@github.com:pixelass/phony.git",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "url": "https://pixelass.com"
   },
   "scripts": {
-    "start": "phonyql -f",
-    "export": "phonyql -e"
+    "export": "phonyql -e",
+    "start": "phonyql -f"
   },
   "devDependencies": {
     "@phony/cli": "^0.1.0"

@@ -1,15 +1,15 @@
 {
   "name": "docs",
+  "version": "0.1.0",
+  "license": "MIT",
   "author": {
     "name": "Gregor Adams",
     "email": "greg@pixelass.com",
     "url": "https://pixelass.com"
   },
-  "version": "0.1.0",
-  "license": "MIT",
   "scripts": {
-    "docs:develop": "gatsby develop",
-    "docs:build": "gatsby build --prefix-paths"
+    "docs:build": "gatsby build --prefix-paths",
+    "docs:develop": "gatsby develop"
   },
   "dependencies": {
     "@types/react": "^16.9.23",

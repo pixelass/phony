@@ -30,9 +30,9 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c",
-    "watch": "rollup -cw",
     "test": "ava",
-    "test:watch": "ava --watch"
+    "test:watch": "ava --watch",
+    "watch": "rollup -cw"
   },
   "dependencies": {
     "@types/lodash.chunk": "^4.2.6",

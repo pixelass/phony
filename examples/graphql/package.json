@@ -1,7 +1,7 @@
 {
   "name": "@examples/graphql",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
   "description": "Example for a phonyql",
   "repository": "git@github.com:pixelass/phony.git",
   "license": "MIT",
