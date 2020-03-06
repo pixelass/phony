@@ -1,5 +1,5 @@
 import { buildRelations } from "./relations";
-import { capitalize, pluralize, isCapitalized, isId, withRequired } from "@phony/utils";
+import { capital, plural, singular, isPlural, isCapital, isId, withRequired } from "@phony/utils";
 import { Database, Entry, NameConfig, NameMap, PonyConfig } from "./types";
 import { buildQueryDefs } from "./query";
 import { buildMutationDefs } from "./mutation";
@@ -10,13 +10,13 @@ import { META_DATA_TYPE, PAGINATION_TYPE, SORTING_TYPE } from "../constants";
 
 export function buildName(str: string, collectionName: string): string | false {
 	const match = str.match(/(.*)\[([nN]ames?)](.*)/);
-	const _collectionName = pluralize.singular(collectionName).toLowerCase();
+	const _collectionName = singular(collectionName).toLowerCase();
 	if (match) {
 		const [, prefix, name, suffix] = match;
-		const c = isCapitalized(name);
-		const p = pluralize.isPlural(name);
-		return `${prefix}${pluralize[p ? "plural" : "singular"](
-			c ? capitalize(_collectionName) : _collectionName
+		const c = isCapital(name);
+		const p = isPlural(name);
+		return `${prefix}${(p ? plural : singular)(
+			c ? capital(_collectionName) : _collectionName
 		)}${suffix}`;
 	}
 	return false;
@@ -55,11 +55,11 @@ function withoutArray(str) {
 function buildNames(obj, name = "") {
 	return obj
 		? Object.entries(obj).reduce((current, [key, value]) => {
-				const __typename = name + capitalize(pluralize.singular(key));
+				const __typename = name + capital(singular(key));
 				const isArr = isArray(value);
 				const v = isArr ? value[0] : value;
-				if (isCapitalized(key)) {
-					return { ...current, [key]: pluralize.singular(key) };
+				if (isCapital(key)) {
+					return { ...current, [key]: singular(key) };
 				}
 				return {
 					...current,
@@ -81,10 +81,10 @@ function buildTypeDef(
 	typeDefs: string[]
 ): string[] {
 	const type = Object.entries(all).reduce((current, [key, value]) => {
-		if (isCapitalized(key)) {
+		if (isCapital(key)) {
 			return `${current}\n  ${key}: ${withArray(
-				pluralize.singular(key),
-				pluralize.isPlural(key)
+				singular(key),
+				isPlural(key)
 			)}!`;
 		}
 		if (value && isPlainObject(value)) {
@@ -101,7 +101,7 @@ function buildTypeDef(
 export function buildTypeDefs(data: Database): string {
 	const typeDefs = [];
 	Object.entries(data).forEach(([key, value]) => {
-		const name = capitalize(pluralize.singular(key));
+		const name = capital(singular(key));
 		const [first, second] = value;
 		const names = buildNames(first, name);
 		const _names = buildNames(second, name) || names;

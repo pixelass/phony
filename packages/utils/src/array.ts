@@ -1,4 +1,4 @@
-import { Collection, Filter, Pagination, Sorting } from "./types";
+import {Collection, Entry, Filter, Pagination, Sorting} from "./types";
 import chunk from "lodash.chunk";
 import { isString } from "is-what";
 
@@ -21,7 +21,7 @@ export function compare(a: number, b: number, c: string): boolean {
 	}
 }
 
-export function sortByField(collection: Collection, field: string) {
+export function sortByField(collection: Entry[], field: string) {
 	return collection.sort((a, b) => {
 		const fieldA = isString(a[field]) ? (a[field] as string).toLowerCase() : a[field];
 		const fieldB = isString(b[field]) ? (b[field] as string).toLowerCase() : b[field];
@@ -35,7 +35,7 @@ export function sortByField(collection: Collection, field: string) {
 	});
 }
 
-export function withSorting(collection: Collection, sorting?: Sorting) {
+export function withSorting(collection: Entry[], sorting?: Sorting) {
 	return sorting
 		? sorting.order === "desc"
 			? sortByField(collection, sorting.field).reverse()
@@ -43,11 +43,11 @@ export function withSorting(collection: Collection, sorting?: Sorting) {
 		: collection;
 }
 
-export function withPagination(collection: Collection, pagination?: Pagination) {
+export function withPagination(collection: any[], pagination?: Pagination) {
 	return pagination ? chunk(collection, pagination.pageSize)[pagination.page] : collection;
 }
 
-export function withFilter(collection: Collection, filter?: Filter) {
+export function withFilter(collection: Entry[], filter?: Filter) {
 	return filter
 		? collection.filter(item => {
 				const { length } = Object.entries(item).filter(([key, value]) => {

@@ -1,10 +1,10 @@
-import { capitalize, pluralize } from "@phony/utils";
+import { capital, plural, singular } from "@phony/utils";
 
 export function getNameVariants(input) {
-	const name = pluralize.singular(input);
-	const name_ = pluralize.plural(name);
-	const Name = capitalize(name);
-	const Name_ = capitalize(name_);
+	const name = singular(input);
+	const name_ = plural(name);
+	const Name = capital(name);
+	const Name_ = capital(name_);
 	return {
 		singular: {
 			lower: name,

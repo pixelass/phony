@@ -1,5 +1,5 @@
 import { getNameVariants } from "./name";
-import { isCapitalized } from "@phony/utils";
+import { isCapital } from "@phony/utils";
 import omit from "lodash.omit";
 import { Database, NameMap } from "./types";
 import { buildFilter } from "./filter";
@@ -11,7 +11,7 @@ export function buildQueryDefs(data: Database, typeNames: NameMap, phonyInputs: 
 		const names = getNameVariants(key);
 		const localNames = typeNames[key];
 		const [first] = collection;
-		const removals = Object.keys(first).filter(isCapitalized);
+		const removals = Object.keys(first).filter(isCapital);
 		buildFilter(key, omit(first, removals), localNames, phonyInputs);
 		queryDefs.push(
 			`${localNames.get.all}(pagination: Pagination, sorting: Sorting, filter: ${localNames.input.filter}): [${names.singular.capital}]!`
