@@ -30,7 +30,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c",
-    "test": "ava",
+    "test": "nyc ava",
     "test:watch": "ava --watch",
     "watch": "rollup -cw"
   },
