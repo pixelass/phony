@@ -1,14 +1,9 @@
 import { v4 as uuid } from "uuid";
 import { update as updateDB } from "./database";
 import { getPage, isSame, withSorting, withFilter } from "@phony/utils";
-import { NameConfig, Database, Root } from "./types";
+import { Database, Root, NameMap } from "./types";
 
-export function buildRoot(
-	data: Database,
-	plainData: Database,
-	names: { [key: string]: NameConfig },
-	config
-): Root {
+export function buildRoot(data: Database, plainData: Database, names: NameMap, config): Root {
 	const {
 		queryConfig: {
 			internalFields: { created, updated }

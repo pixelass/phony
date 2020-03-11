@@ -1,6 +1,6 @@
 import { isFloat, isBoolean, isNumber, isDate, isPlainObject, isString } from "@phony/utils";
 
-export const types = {
+export const types: {[key: string]: string} = {
 	id: "ID",
 	date: "String",
 	string: "String",
@@ -10,7 +10,7 @@ export const types = {
 	object: "JSON"
 };
 
-export function getType(value) {
+export function getType(value: any): string {
 	if (isDate(value)) {
 		return "date";
 	}
@@ -27,10 +27,10 @@ export function getType(value) {
 		return "object";
 	}
 }
-export function getSchemaType(value) {
+export function getSchemaType(value: any): string {
 	return types[getType(value)];
 }
 
-export function buildTypeDef(type: string, name: string, defs: string[]) {
+export function buildTypeDefStr(type: string, name: string, defs: string[]): string {
 	return `${type} ${name} {\n  ${defs.join("\n  ").trim()}\n}`;
 }

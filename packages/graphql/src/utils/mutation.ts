@@ -1,12 +1,12 @@
 import { getNameVariants } from "./name";
-import { Database, DatabaseEntry, NameConfig } from "./types";
-import { buildTypeDef, getSchemaType, types } from "./type";
+import {Database, DatabaseCollection, NameConfig} from "./types";
+import { buildTypeDefStr, getSchemaType, types } from "./type";
 import { isId, isRelative, withRequired } from "@phony/utils";
 
 export function buildInputDef(
 	name: string,
-	collection: DatabaseEntry[],
-	internalFields,
+	collection: DatabaseCollection,
+	internalFields: string[],
 	allOptional = false
 ) {
 	const [first, second] = collection;
@@ -14,7 +14,7 @@ export function buildInputDef(
 	const requiredFields = Object.keys(second).filter(
 		key => !isId(key) && !internalFields.includes(key)
 	);
-	return buildTypeDef(
+	return buildTypeDefStr(
 		"input",
 		name,
 		allFields.map(field => {
@@ -30,8 +30,8 @@ export function buildInputDef(
 export function buildMutationDefs(
 	data: Database,
 	typeNames: { [key: string]: NameConfig },
-	queryConfig,
-	phonyInputs
+	queryConfig: NameConfig,
+	phonyInputs: string[]
 ) {
 	const mutationDefs = [];
 	const internalFields = Object.values(queryConfig.internalFields);
@@ -48,5 +48,5 @@ export function buildMutationDefs(
 		);
 		mutationDefs.push(`${localNames.post.delete}(id: ID!): Boolean!\n`);
 	});
-	return buildTypeDef("type", "Mutation", mutationDefs);
+	return buildTypeDefStr("type", "Mutation", mutationDefs);
 }

@@ -27,6 +27,8 @@
     "ocd": "npx sort-package-json; lerna exec npx sort-package-json",
     "pretest": "yarn build",
     "test": "lerna run test --parallel",
+    "test:watch": "lerna run test:watch --parallel",
+    "test:dev": "concurrently 'yarn watch' 'yarn test:watch'",
     "toc": "npx markdown-toc -i README.md",
     "prewatch": "yarn build",
     "watch": "lerna run watch --parallel"

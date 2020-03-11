@@ -5,15 +5,17 @@ export interface Root {
 }
 
 export interface DatabaseEntry {
-	id: string;
+	id: string | number;
 	[key: string]: any;
 }
+
+export type DatabaseCollection = DatabaseEntry[];
 
 export interface Entry {
 	[key: string]: any;
 }
 export interface Database {
-	[key: string]: DatabaseEntry[];
+	[key: string]: DatabaseCollection;
 }
 
 export interface NameConfig {
@@ -28,40 +30,24 @@ export interface NameConfig {
 		delete: string;
 	};
 	input: {
+		filterFields: string;
 		filter: string;
 		create: string;
 		update: string;
-	};
+	},
+	internalFields: {
+		[key: string]: string;
+	}
+	;
 }
 
 export interface NameMap {
 	[key: string]: NameConfig;
 }
 
+
 export interface PonyConfig {
-	queryConfig: {
-		get: {
-			byId: string;
-			all: string;
-			meta: string;
-		};
-		post: {
-			create: string;
-			update: string;
-			delete: string;
-		};
-		input: {
-			filter: string;
-			filterFields: string;
-			create: string;
-			update: string;
-		};
-		internalFields: {
-			created: string;
-			updated: string;
-			views: string;
-		};
-	};
+	queryConfig: NameConfig;
 	schema: string;
 	input: string;
 	database: string;

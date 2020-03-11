@@ -1,11 +1,9 @@
-import { isId, isNumber, isRelative } from "@phony/utils";
-import { buildTypeDef, getSchemaType, types } from "./type";
-import { isString } from "is-what";
+import { isId, isNumber, isRelative, isString, OPERATORS } from "@phony/utils";
+import { buildTypeDefStr, getSchemaType, types } from "./type";
+import {Entry, NameConfig} from "./types";
 
-export const operators = ["gt", "gte", "lte", "lt"];
-
-export function buildFilterFields(key, fields, name, phonyInputs = []) {
-	const typeDef = buildTypeDef(
+export function buildFilterFields(fields: Entry, name: string, phonyInputs: string[] = []): string {
+	const typeDef = buildTypeDefStr(
 		"input",
 		name,
 		Object.entries(fields)
@@ -15,7 +13,7 @@ export function buildFilterFields(key, fields, name, phonyInputs = []) {
 					const type = getSchemaType(value);
 					return [
 						`${name}: ${type}`,
-						...operators.map(suffix => `${name}_${suffix}: ${type}`)
+						...Object.values(OPERATORS).map(suffix => `${name}_${suffix}: ${type}`)
 					].join("\n  ");
 				}
 				if (hasId) {
@@ -29,13 +27,15 @@ export function buildFilterFields(key, fields, name, phonyInputs = []) {
 			.filter(Boolean)
 	);
 	phonyInputs.push(typeDef);
+	return typeDef;
 }
 
-export function buildFilter(key, fields, names, phonyInputs = []) {
-	buildFilterFields(key, fields, names.input.filterFields, phonyInputs);
-	const typeDef = buildTypeDef("input", names.input.filter, [
+export function buildFilter(fields: Entry, names: NameConfig, phonyInputs: string[] = []): string {
+	buildFilterFields(fields, names.input.filterFields, phonyInputs);
+	const typeDef = buildTypeDefStr("input", names.input.filter, [
 		"q: String",
 		`fields: ${names.input.filterFields}`
 	]);
 	phonyInputs.push(typeDef);
+	return typeDef;
 }

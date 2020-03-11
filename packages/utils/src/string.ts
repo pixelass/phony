@@ -9,17 +9,17 @@ export function isCapital(s: string) {
 }
 
 export function plural(s: string) {
-	pluralize.plural(s)
+	return pluralize.plural(s)
 }
 
 export function singular(s: string) {
-	pluralize.singular(s)
+	return pluralize.singular(s)
 }
 
 export function isPlural(s: string) {
-	pluralize.isPlural(s)
+	return pluralize.isPlural(s)
 }
 
 export function isSingular(s: string) {
-	pluralize.isSingular(s)
+	return pluralize.isSingular(s)
 }

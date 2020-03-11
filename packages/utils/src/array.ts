@@ -1,20 +1,21 @@
 import {Collection, Entry, Filter, Pagination, Sorting} from "./types";
 import chunk from "lodash.chunk";
 import { isString } from "is-what";
+import {OPERATORS} from "./constants";
 
 export function hasMatch(a: number | string, b: string): RegExpMatchArray {
 	return `${a}`.toLowerCase().match(b.toLowerCase());
 }
 
-export function compare(a: number, b: number, c: string): boolean {
+export function compare(a: number, b: number, c: keyof typeof OPERATORS): boolean {
 	switch (c) {
-		case "gt":
+		case OPERATORS.gt:
 			return a > b;
-		case "gte":
+		case OPERATORS.gte:
 			return a >= b;
-		case "lte":
+		case OPERATORS.lte:
 			return a <= b;
-		case "lt":
+		case OPERATORS.lt:
 			return a < b;
 		default:
 			return false;
@@ -63,7 +64,7 @@ export function withFilter(collection: Entry[], filter?: Filter) {
 							return compare(
 								parseInt(`${value}`),
 								parseInt(filter.fields[fieldKey]),
-								cond
+								OPERATORS[cond]
 							);
 						}
 						if (key in filter.fields) {
