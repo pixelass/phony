@@ -4,6 +4,7 @@ node_js:
 os: linux
 dist: xenial
 install:
-  - yarn global add codecov
+  - yarn
 script:
+  - yarn test
   - codecov
