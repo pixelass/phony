@@ -1,6 +1,6 @@
 {
   "name": "@phony/server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A simple mock-server with cors enabled",
   "repository": "git@github.com:pixelass/phony.git",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@examples/graphql",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Example for a phonyql",
   "repository": "git@github.com:pixelass/phony.git",
@@ -15,6 +15,6 @@
     "start": "node index.js"
   },
   "devDependencies": {
-    "@phony/graphql": "^0.1.0"
+    "@phony/graphql": "^1.0.0"
   }
 }
