@@ -4,14 +4,14 @@
 Phony is a collection of phony (mock) services.  
 Its main purpose is to provide a mocked graphql service
 
-## [Introduction][introduction]
+## [Documentation][docs] | [Playground][playground]
 
 [![MIT license][license-badge]][license]
 [![Build status][build-badge]][build]
 [![Codecov status][codecov-badge]][codecov]
 
 This is the contributor documentation for the `phony` mono-repository.
-For user docs see the [Documentation][docs]
+For user docs see the [Introduction][introduction]
 
 | version                                          | description                      |
 | :----------------------------------------------- | :------------------------------- |
@@ -50,6 +50,7 @@ yarn examples:cli
 
 [docs]: https://pixelass.github.io/phony/
 [introduction]: https://pixelass.github.io/phony/introduction
+[playground]: https://8gdw8.sse.codesandbox.io/
 
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge
 [license]: https://raw.githubusercontent.com/pixelass/phony/master/LICENSE

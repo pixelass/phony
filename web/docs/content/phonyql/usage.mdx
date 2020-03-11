@@ -7,9 +7,11 @@ description: 'Detailed usage examples for @phony/graphql'
 
 ## Queries
 
-## get by ID
+### get by ID
 
 [live example](https://8gdw8.sse.codesandbox.io/?query=query%20(%24id%3A%20ID!)%20%7B%0A%09User(id%3A%20%24id)%20%7B%0A%09%09name%0A%09%7D%0A%7D&variables=%7B%0A%09%09%22id%22%3A%20123%0A%7D)
+
+**query**
 
 ```graphql
 query ($id: ID!) {
@@ -19,11 +21,15 @@ query ($id: ID!) {
 }
 ```
 
+**variables**
+
 ```json
 {
 	"id": 123
 }
 ```
+
+**result**
 
 ```json
 {
@@ -35,29 +41,104 @@ query ($id: ID!) {
 }
 ```
 
-## get all
+### get all
 
-[live example](https://8gdw8.sse.codesandbox.io/?query=query%20(%24id%3A%20ID!)%20%7B%0A%09User(id%3A%20%24id)%20%7B%0A%09%09name%0A%09%7D%0A%7D&variables=%7B%0A%09%09%22id%22%3A%20123%0A%7D)
+* all users
+* page 1 with 5 users per page
+* sorted by their name in ascending order
+* older than 25
+
+[live example](https://8gdw8.sse.codesandbox.io/?variables=%7B%0A%20%20%22pagination%22%3A%20%7B%0A%20%20%20%20%22page%22%3A%200%2C%0A%20%20%20%20%22pageSize%22%3A%205%0A%20%20%7D%2C%0A%20%20%22sorting%22%3A%20%7B%0A%20%20%20%20%22field%22%3A%20%22name%22%2C%0A%20%20%20%20%22order%22%3A%20%22asc%22%0A%20%20%7D%2C%0A%20%20%22filter%22%3A%20%7B%0A%20%20%20%20%22fields%22%3A%20%7B%0A%20%20%20%20%20%20%22age_gt%22%3A%2025%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&query=query%20(%24pagination%3A%20Pagination%2C%20%24sorting%3A%20Sorting%2C%20%24filter%3A%20UsersFilter)%20%7B%0A%20%20allUsers(pagination%3A%20%24pagination%2C%20sorting%3A%20%24sorting%2C%20filter%3A%20%24filter)%20%7B%0A%20%20%20%20name%0A%20%20%20%20age%0A%20%20%20%20company%0A%20%20%7D%0A%7D%0A)
+
+**query**
 
 ```graphql
-query ($id: ID!) {
-	User(id: $id) {
-		name
-	}
+query ($pagination: Pagination, $sorting: Sorting, $filter: UsersFilter) {
+  allUsers(pagination: $pagination, sorting: $sorting, filter: $filter) {
+    name
+    age
+    company
+  }
 }
 ```
+
+**variables**
 
 ```json
 {
-	"id": 123
+  "pagination": {
+    "page": 0,
+    "pageSize": 5
+  },
+  "sorting": {
+    "field": "name",
+    "order": "asc"
+  },
+  "filter": {
+    "fields": {
+      "age_gt": 25
+    }
+  }
 }
 ```
+
+**result**
 
 ```json
 {
   "data": {
-    "User": {
-      "name": "John Doe"
+    "allUsers": [
+      {
+        "name": "Abagail Kilback",
+        "age": 68,
+        "company": "Gaylord - Block"
+      },
+      {
+        "name": "Abigayle D'Amore",
+        "age": 27,
+        "company": "Corwin, Ratke and Conroy"
+      },
+      {
+        "name": "Adah Bernhard",
+        "age": 56,
+        "company": "Murphy, Murazik and Lubowitz"
+      },
+      {
+        "name": "Adonis Bechtelar",
+        "age": 43,
+        "company": "Lakin - Senger"
+      },
+      {
+        "name": "Adrain Hammes",
+        "age": 65,
+        "company": "Ratke, Lind and McClure"
+      }
+    ]
+  }
+}
+```
+
+### get meta data
+
+[live example](https://8gdw8.sse.codesandbox.io/?query=%7B%0A%20%20_allUsersMeta%20%7B%0A%20%20%20%20count%0A%20%20%7D%0A%7D%0A)
+
+**query**
+
+```graphql
+{
+  _allUsersMeta {
+    count
+  }
+}
+```
+
+**result**
+
+```json
+{
+  "data": {
+    "_allUsersMeta": {
+      "count": 202
     }
   }
 }
