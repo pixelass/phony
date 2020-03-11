@@ -8,6 +8,7 @@ Its main purpose is to provide a mocked graphql service
 
 [![MIT license][license-badge]][license]
 [![Build status][build-badge]][build]
+[![Codecov status][codecov-badge]][codecov]
 
 This is the contributor documentation for the `phony` mono-repository.
 For user docs see the [Documentation][docs]
@@ -48,3 +49,5 @@ yarn examples:cli
 [license]: https://raw.githubusercontent.com/pixelass/phony/master/LICENSE
 [build-badge]: https://img.shields.io/travis/pixelass/phony/master.svg?style=for-the-badge&logo=travis&logoColor=white
 [build]: https://travis-ci.org/pixelass/phony
+[codecov-badge]: https://img.shields.io/codecov/c/github/pixelass/phony.svg?style=for-the-badge&logo=codecov&logoColor=white
+[codecov]: https://codecov.io/gh/pixelass/phony
