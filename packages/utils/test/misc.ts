@@ -8,11 +8,9 @@ test("isId() returns `true` for 'id'", t => {
 test("isId() returns `false` for anything but 'id'", t => {
 	t.false(isId("_id"));
 	t.false(isId("id_"));
-	t.false(isId("kid"));
-	t.false(isId("identity"));
+	t.false(isId("uuid"));
+	t.false(isId("ident"));
 	t.false(isId("foo_id"));
-	t.false(isId("foo"));
-	t.false(isId("I do"));
 	t.false(isId("iD"));
 	t.false(isId("Id"));
 	t.false(isId("ID"));
@@ -34,19 +32,15 @@ test("isRelative() returns `false` for anything but '_id' matches", t => {
 
 test("withRequired() returns '!' for `true` and '' for `false`", t => {
 	t.is(withRequired(true), "!");
-	t.is(withRequired(!0), "!");
 	t.is(withRequired(false), "");
-	t.is(withRequired(!!0), "");
 });
 
 test("withArray() returns a string in brackets ([string!]) if `true`", t => {
 	t.is(withArray("Foo", true), "[Foo!]");
-	t.is(withArray("Foo", !0), "[Foo!]");
 });
 
 test("withArray() returns the input string if `false`", t => {
 	t.is(withArray("Foo", false), "Foo");
-	t.is(withArray("Foo", !!0), "Foo");
 });
 
 test("withoutArray() returns removes the brackets ([string!]) from a string", t => {
