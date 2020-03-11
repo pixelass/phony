@@ -1,4 +1,4 @@
-import {Collection, Entry, Filter, Pagination, Sorting} from "./types";
+import {Entry, Filter, Pagination, Sorting} from "./types";
 import chunk from "lodash.chunk";
 import { isString } from "is-what";
 import {OPERATORS} from "./constants";
