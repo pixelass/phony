@@ -9,6 +9,17 @@
     "email": "greg@pixelass.com",
     "url": "https://pixelass.com"
   },
+  "keywords": [
+    "graphql",
+    "graphiql",
+    "mocking",
+    "mock",
+    "server",
+    "express",
+    "utils",
+    "toolchain",
+    "cli"
+  ],
   "bin": {
     "phonyql": "phonyql.js"
   },

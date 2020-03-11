@@ -9,6 +9,16 @@
     "email": "greg@pixelass.com",
     "url": "https://pixelass.com"
   },
+  "keywords": [
+    "graphql",
+    "graphiql",
+    "mocking",
+    "mock",
+    "server",
+    "express",
+    "utils",
+    "toolchain"
+  ],
   "main": "index.js",
   "module": "dist/esm/index.js",
   "typings": "dist/index.d.ts",
