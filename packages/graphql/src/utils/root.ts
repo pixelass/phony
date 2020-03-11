@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { update as updateDB } from "./database";
-import { getPage, isSame, withSorting, withFilter } from "@phony/utils";
+import { withPagination, isSame, withSorting, withFilter } from "@phony/utils";
 import { Database, Root, NameMap } from "./types";
 
 export function buildRoot(data: Database, plainData: Database, names: NameMap, config): Root {
@@ -19,7 +19,7 @@ export function buildRoot(data: Database, plainData: Database, names: NameMap, c
 		return {
 			...current,
 			[localNames.get.all]: ({ pagination, sorting, filter }) =>
-				getPage(withSorting(withFilter(collection, filter), sorting), pagination),
+				withPagination(withSorting(withFilter(collection, filter), sorting), pagination),
 			[localNames.get.byId]: ({ id }) => collection.find(isSame(id)),
 			[localNames.get.meta]: () => ({
 				count: collection.length
