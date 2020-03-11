@@ -1,0 +1,8 @@
+{
+  "check-coverage": true,
+  "all": true,
+  "reporter": ["html", "lcov", "text", "text-summary"],
+  "include": ["src/*.ts", "src/**/*.ts"],
+  "exclude": ["src/constants.ts"],
+  "report-dir": "coverage"
+}

@@ -1,0 +1,9 @@
+{
+	"check-coverage": true,
+	"all": true,
+	"extension": [".js", ".ts"],
+	"include": ["src/**/*.ts"],
+	"exclude": ["src/file.ts", "src/object.ts"],
+	"reporter": ["html", "lcov", "text", "text-summary"],
+	"report-dir": "coverage"
+}
