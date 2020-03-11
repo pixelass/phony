@@ -27,6 +27,7 @@ export function buildRelations(json: Database): Database {
 						} else if (!hasChildren) {
 							item[upperKey] = [];
 						}
+						/* istanbul ignore else */
 						if (!isArray(entry[upperPropName])) {
 							entry[upperPropName] = parent;
 						}

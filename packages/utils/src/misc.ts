@@ -1,10 +1,12 @@
 import {ItemComparison} from "./types";
 import {ID, ID_SUFFIX} from "./constants";
 
+/* istanbul ignore next */
 export function isRelated(id: number | string, name: string): ItemComparison {
 	return item => `${item[name]}` === `${id}`;
 }
 
+/* istanbul ignore next */
 export function isSame(id: string): ItemComparison {
 	return isRelated(id, "id");
 }

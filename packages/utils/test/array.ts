@@ -84,12 +84,13 @@ test("compare() compares `a` and `b` with `gte` as `a >= b", t => {
 });
 
 test("sortByField() sorts arrays of objects by field", t => {
-	const [a, b, c] = [
+	const [a, b, c, d] = [
 		{ a: 4, b: 18 },
 		{ a: 10, b: 4 },
-		{ a: 18, b: 10 }
+		{ a: 18, b: 10 },
+		{ a: 18, b: 18 }
 	];
-	const original = [b, c, a];
+	const original = [b, c, a, d];
 	t.is(sortByField(original, "a")[0], a);
 	t.is(sortByField(original, "a")[1], b);
 	t.is(sortByField(original, "b")[0], b);

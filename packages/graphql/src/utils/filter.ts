@@ -19,9 +19,11 @@ export function buildFilterFields(fields: Entry, name: string, phonyInputs: stri
 				if (hasId) {
 					return `${name}: ${types.id}`;
 				}
+				/* istanbul ignore else */
 				if (isString(value)) {
 					return `${name}: ${types.string}`;
 				}
+				/* istanbul ignore next */
 				return "";
 			})
 			.filter(Boolean)

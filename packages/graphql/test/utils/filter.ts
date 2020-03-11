@@ -45,8 +45,20 @@ test("buildFilter() should build a filter", t => {
 	t.is(actual, expected);
 });
 
+test("buildFilter() can build into a temp array", t => {
+	const expected = FILTER;
+	const actual = buildFilter(fields, nameConfig);
+	t.is(actual, expected);
+});
+
 test("buildFilterFields() should build filter fields", t => {
 	const expected = FILTER_FIELDS;
 	const actual = buildFilterFields(fields, nameConfig.input.filterFields, []);
+	t.is(actual, expected);
+});
+
+test("buildFilterFields() can build into a temp array", t => {
+	const expected = FILTER_FIELDS;
+	const actual = buildFilterFields(fields, nameConfig.input.filterFields);
 	t.is(actual, expected);
 });

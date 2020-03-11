@@ -17,6 +17,7 @@ export function compare(a: number, b: number, c: keyof typeof OPERATORS): boolea
 			return a <= b;
 		case OPERATORS.lt:
 			return a < b;
+		/* istanbul ignore next */
 		default:
 			return false;
 	}
@@ -30,7 +31,7 @@ export function sortByField(collection: Entry[], field: string) {
 			return -1;
 		} else if (fieldA > fieldB) {
 			return 1;
-		} else {
+		}  else {
 			return 0;
 		}
 	});

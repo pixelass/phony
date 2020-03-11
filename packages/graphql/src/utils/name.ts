@@ -32,6 +32,7 @@ export function getNameVariants(input) {
 export function buildName(str: string, collectionName: string): string | false {
 	const match = str.match(/(.*)\[([nN]ames?)](.*)/);
 	const _collectionName = singular(collectionName).toLowerCase();
+	/* istanbul ignore else */
 	if (match) {
 		const [, prefix, name, suffix] = match;
 		const c = isCapital(name);
@@ -40,6 +41,7 @@ export function buildName(str: string, collectionName: string): string | false {
 			c ? capital(_collectionName) : _collectionName
 		)}${suffix}`;
 	}
+	/* istanbul ignore next */
 	return false;
 }
 

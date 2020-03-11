@@ -108,6 +108,10 @@ const data = {
 			rating: 2.5,
 			title: "Lorem Ipsum",
 			user_id: 123,
+			User: [{
+				id: 123,
+				name: "John Doe"
+			}]
 		},
 		{
 			id: 2,
@@ -142,10 +146,16 @@ test("buildTypeNames() should build a nameMap", t => {
 });
 
 test("buildNames() should build types of nested props", t => {
-	const names = buildNames(data.posts[0], "");
+	const names = buildNames(data.posts[0]);
 	t.is(names.id, types.id);
 	t.is(names.user_id, types.id);
 	t.is(names.views, types.integer);
 	t.is(names.rating, types.float);
 	t.is(names.title, types.string);
+});
+
+test("buildNames() should build deeply", t => {
+	const names = buildNames({id: "foo", first: {second: {third: "Deep"}}});
+	t.is(names.first.second.__typename, "FirstSecond");
+	t.is(names.first.second.third, types.string);
 });

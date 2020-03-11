@@ -23,6 +23,7 @@ export function getType(value: any): string {
 	if (isBoolean(value)) {
 		return "boolean";
 	}
+	/* istanbul ignore else */
 	if (isPlainObject(value)) {
 		return "object";
 	}
