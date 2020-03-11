@@ -1,6 +1,6 @@
 {
   "name": "@phony/utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utils for phony packages",
   "repository": "git@github.com:pixelass/phony.git",
   "license": "MIT",

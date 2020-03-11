@@ -1,6 +1,6 @@
 {
   "name": "@phony/cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple mock-server with cors enabled",
   "repository": "git@github.com:pixelass/phony.git",
   "license": "MIT",
@@ -41,7 +41,7 @@
     "meow": "^6.0.1"
   },
   "devDependencies": {
-    "@phony/graphql": "^1.0.0"
+    "@phony/graphql": "^1.0.1"
   },
   "peerDependencies": {
     "@phony/graphql": ">=0.1.0"

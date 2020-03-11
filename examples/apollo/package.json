@@ -1,6 +1,6 @@
 {
   "name": "@examples/apollo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "predev": "phonyql -e",
@@ -44,8 +44,8 @@
     "react-i18next": "^11.3.3"
   },
   "devDependencies": {
-    "@phony/cli": "^1.0.0",
-    "@phony/graphql": "^1.0.0",
+    "@phony/cli": "^1.0.1",
+    "@phony/graphql": "^1.0.1",
     "frontmatter-markdown-loader": "^3.2.0",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0"
