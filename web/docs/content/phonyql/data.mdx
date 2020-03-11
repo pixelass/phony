@@ -18,7 +18,9 @@ the second entry only needs the required properties.
 Phony looks up the first entry and uses it to build the type. If it does not
 appear in the second entry it is treated as an optional property.
 
-### Database setup
+### Example
+
+The following snippet shows a usable format. The generated schema can be seen below.
 
 ```js
 module.exports = {
@@ -36,25 +38,29 @@ module.exports = {
 };
 ```
 
-### Exposed schema
+**This is the schema generated from the data above**
 
 ```graphql
 type Query {
-	getUsers(pagination: Pagination): [User]
-	getUser(id: ID!): User
-	_getUsersMeta: MetaData
+  allUsers(pagination: Pagination, sorting: Sorting, filter: UsersFilter): [User]!
+  User(id: ID!): User
+  _allUsersMeta: MetaData!
 }
 
 type Mutation {
-	createUser(input: UserInput!): User
-	updateUser(id: ID!, input: UserUpdateInput!): User
-	deleteUser(id: ID!): Boolean
+  createUser(input: UserInitInput!): User!
+  updateUser(id: ID!, input: UserUpdateInput!): User!
+  removeUser(id: ID!): Boolean!
 }
 
-input Pagination {
-	page: Int
-	pageSize: Int
-	sorting: Sorting
+type User {
+  id: ID!
+  name: String!
+  email: String
+}
+
+type MetaData {
+	count: Int!
 }
 
 input Sorting {
@@ -67,24 +73,30 @@ enum SortOrder {
 	desc
 }
 
-type MetaData {
-	count: Int!
+input Pagination {
+	page: Int
+	pageSize: Int
 }
 
-type User {
-	id: ID!
-	name: String!
-	email: String
+input UsersFilterFields {
+  id: ID
+  name: String
+  email: String
 }
 
-input UserInput {
-	name: String!
-	email: String
+input UsersFilter {
+  q: String
+  fields: UsersFilterFields
+}
+
+input UserInitInput {
+  name: String!
+  email: String
 }
 
 input UserUpdateInput {
-	name: String
-	email: String
+  name: String
+  email: String
 }
 ```
 

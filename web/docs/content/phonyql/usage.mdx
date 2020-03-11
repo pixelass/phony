@@ -1,0 +1,64 @@
+---
+title: 'Usage'
+description: 'Detailed usage examples for @phony/graphql'
+---
+
+`phonyql` provides queries and mutations, generated from provided data.
+
+## Queries
+
+## get by ID
+
+[live example](https://8gdw8.sse.codesandbox.io/?query=query%20(%24id%3A%20ID!)%20%7B%0A%09User(id%3A%20%24id)%20%7B%0A%09%09name%0A%09%7D%0A%7D&variables=%7B%0A%09%09%22id%22%3A%20123%0A%7D)
+
+```graphql
+query ($id: ID!) {
+	User(id: $id) {
+		name
+	}
+}
+```
+
+```json
+{
+	"id": 123
+}
+```
+
+```json
+{
+  "data": {
+    "User": {
+      "name": "John Doe"
+    }
+  }
+}
+```
+
+## get all
+
+[live example](https://8gdw8.sse.codesandbox.io/?query=query%20(%24id%3A%20ID!)%20%7B%0A%09User(id%3A%20%24id)%20%7B%0A%09%09name%0A%09%7D%0A%7D&variables=%7B%0A%09%09%22id%22%3A%20123%0A%7D)
+
+```graphql
+query ($id: ID!) {
+	User(id: $id) {
+		name
+	}
+}
+```
+
+```json
+{
+	"id": 123
+}
+```
+
+```json
+{
+  "data": {
+    "User": {
+      "name": "John Doe"
+    }
+  }
+}
+```
