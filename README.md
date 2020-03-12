@@ -9,6 +9,7 @@ Its main purpose is to provide a mocked graphql service
 [![MIT license][license-badge]][license]
 [![Build status][build-badge]][build]
 [![Codecov status][codecov-badge]][codecov]
+[![Code Quality][codeclimate-badge]][codeclimate]
 
 This is the contributor documentation for the `phony` mono-repository.
 For user docs see the [Introduction][introduction]
@@ -58,6 +59,10 @@ yarn examples:cli
 [build]: https://travis-ci.org/pixelass/phony
 [codecov-badge]: https://img.shields.io/codecov/c/github/pixelass/phony.svg?style=for-the-badge&logo=codecov&logoColor=white
 [codecov]: https://codecov.io/gh/pixelass/phony
+[codeclimate-badge]: https://img.shields.io/codeclimate/maintainability/pixelass/phony.svg?style=for-the-badge
+[codeclimate]: https://codeclimate.com/github/pixelass/phony/
+
+
 [utils-badge]: https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpixelass%2Fphony%2Fmaster%2Fpackages%2Futils%2Fpackage.json&query=version&prefix=@phony/utils@&style=for-the-badge&label=yarn&colorB=2c8ebb
 [phony-utils]: https://www.yarnpkg.com/package/@phony/utils
 [server-badge]: https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpixelass%2Fphony%2Fmaster%2Fpackages%2Fserver%2Fpackage.json&query=version&prefix=@phony/server@&style=for-the-badge&label=yarn&colorB=2c8ebb
